@@ -1,6 +1,13 @@
 import "./Hero.css";
 
 export default function Hero() {
+  const scrollToMenu = () => {
+    const el = document.getElementById("home-menu");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <section className="hero" aria-labelledby="hero-title">
       <img className="hero__bg" src="/hero.jpg" alt="" aria-hidden="true" />
@@ -11,7 +18,9 @@ export default function Hero() {
           <strong>Sweet Bakery</strong>
         </h1>
         <p className="hero__sub">where every bite brings a smile!</p>
-        <button className="hero__cta">Order now!</button>
+        <button className="hero__cta" onClick={scrollToMenu}>
+          Order now!
+        </button>
       </div>
     </section>
   );

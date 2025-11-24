@@ -4,12 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx";
 import { formatVND } from "../../lib/money";
 
-export default function MenuSection() {
+export default function MenuSection({ anchorId = "home-menu" }) {
   const cart = useCart();
   const nav = useNavigate();
 
   return (
-    <section className="menu">
+    <section className="menu" id={anchorId}>
       <div className="container">
         <h2 className="menu__title">OUR MENU</h2>
 
@@ -22,7 +22,11 @@ export default function MenuSection() {
 
             <div className="menu__grid">
               {section.items.map((item) => (
-                <article key={item.id} className="menu__card">
+                <article
+                  key={item.id}
+                  id={`menu-item-${item.id}`}
+                  className="menu__card"
+                >
                   <div className="menu__thumbWrap">
                     <img className="menu__img" src={item.image} alt={item.name} />
                   </div>

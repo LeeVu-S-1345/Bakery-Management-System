@@ -3,6 +3,9 @@ import { useMemo, useState } from "react";
 import { useCart } from "../context/CartContext.jsx";
 import { formatVND } from "../lib/money";
 import { Link, useNavigate } from "react-router-dom";
+import { generateOrderId, saveOrder } from "../lib/orders.js";
+import Header from "../components/Header/Header.jsx";
+import Footer from "../components/Footer/Footer.jsx";
 
 const CITIES = ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng"];
 const DISTRICTS = {
@@ -84,8 +87,12 @@ export default function Checkout() {
   function placeOrder(e) {
     e.preventDefault();
     if (!valid()) return;
-    // mock payload
+    const orderId = generateOrderId();
+    const placedAt = new Date().toISOString();
     const payload = {
+      id: orderId,
+      status: "Processing",
+      placedAt,
       customer,
       receiver: receiverSame ? customer : receiver,
       address: { city, district, ward, street },
@@ -101,19 +108,26 @@ export default function Checkout() {
         total,
       },
       voucher: voucher.toUpperCase() || null,
+      timeline: [
+        { label: "Order placed", time: placedAt, note: "Chờ xác nhận" },
+        { label: "Preparing", time: null, note: "Bếp đang chuẩn bị" },
+        { label: "On delivery", time: null, note: "Đang giao bởi shipper" },
+      ],
     };
-    console.log("🧾 ORDER:", payload);
+    saveOrder(payload);
     cart.clear();
-    nav("/"); // thực tế sẽ điều hướng sang trang cảm ơn /order-success
+    nav(`/order-success/${orderId}`);
   }
 
   const districts = DISTRICTS[city] || [];
   const wards = WARDS[district] || [];
 
   return (
-    <main className="checkout">
-      <div className="container">
-        <h1 className="co__title">Order Confirmation</h1>
+    <>
+      <Header />
+      <main className="checkout">
+        <div className="container">
+          <h1 className="co__title">Order Confirmation</h1>
 
         <div className="co__grid">
           {/* LEFT */}
@@ -329,7 +343,9 @@ export default function Checkout() {
             </section>
           </aside>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }

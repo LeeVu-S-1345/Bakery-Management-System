@@ -1,17 +1,14 @@
+// src/components/Header/Header.jsx
 import "./Header.css";
-<<<<<<< Updated upstream
-import { Link, NavLink } from "react-router-dom";
-=======
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
->>>>>>> Stashed changes
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "../../context/CartContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { MENU_SECTIONS } from "../../data/menuData.js"; // ✅ nhớ đúng path + đuôi .js
+
 export default function Header() {
   const cart = useCart();
   const auth = useAuth();
-<<<<<<< Updated upstream
-=======
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [trackId, setTrackId] = useState("");
@@ -45,7 +42,6 @@ export default function Header() {
     setSearchTerm("");
   };
 
->>>>>>> Stashed changes
   return (
     <header className="hdr">
       {/* Top bar */}
@@ -54,35 +50,52 @@ export default function Header() {
           <img src="/logo.png" alt="Sweet Bakery" />
         </Link>
 
-        {/* Search left */}
-        <form className="hdr__search">
-          <input type="text" placeholder="Find you cake" aria-label="Search cake" />
-          <button type="submit" aria-label="Search">🔍</button>
+        {/* Search */}
+        <form className="hdr__search" onSubmit={onSearchSubmit}>
+          <input
+            type="text"
+            placeholder="Find your cake"
+            aria-label="Search cake"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button type="submit" aria-label="Search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </button>
         </form>
 
         {/* Track order */}
-        <form className="hdr__track">
-          <input type="text" placeholder="Track your Order - Enter Order's ID" aria-label="Track order" />
-          <button type="submit" aria-label="Track">🔎</button>
+        <form
+          className="hdr__track"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!trackId.trim()) return;
+            navigate(`/track/${trackId.trim().toUpperCase()}`);
+            setTrackId("");
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Enter Order's ID"
+            aria-label="Track order"
+            value={trackId}
+            onChange={(e) => setTrackId(e.target.value)}
+          />
+          <button type="submit" aria-label="Track">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </button>
         </form>
 
         {/* Actions */}
         <nav className="hdr__actions">
-          {/* Nếu CHƯA đăng nhập */}
           {!auth.isAuthed ? (
             <>
-<<<<<<< Updated upstream
-              <Link to="/signin">Sign in</Link>
-              <Link to="/signup">Sign up</Link>
-              <Link to="/cart">🛒 Cart ({cart.count})</Link>
-            </>
-          ) : (
-            <>
-              <span>Hi, <strong>{auth.user.name}</strong></span>
-              <Link to="/account">My account</Link>
-              <button className="icon-btn" onClick={auth.logout} title="Sign out">⎋</button>
-              <Link to="/cart">🛒 Cart ({cart.count})</Link>
-=======
               <Link to="/signin" className="hdr__action-item">
                 <span className="hdr__icon-circle">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -102,6 +115,16 @@ export default function Header() {
                   </svg>
                 </span>
                 <span>Sign up</span>
+              </Link>
+              <Link to="/cart" className="hdr__action-item hdr__action-item--cart">
+                <span className="hdr__icon-circle">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  </svg>
+                </span>
+                {cart.count > 0 && <span className="hdr__cart-count">{cart.count}</span>}
               </Link>
             </>
           ) : (
@@ -125,7 +148,6 @@ export default function Header() {
                   type="button"
                   className="hdr__action-item"
                   onClick={() => setIsAccountOpen((prev) => !prev)}
-                  aria-expanded={isAccountOpen}
                 >
                   <span className="hdr__icon-circle">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -163,7 +185,7 @@ export default function Header() {
                         onLogout();
                       }}
                     >
-                      Sign out
+                      Logout
                     </button>
                   </div>
                 )}
@@ -178,7 +200,7 @@ export default function Header() {
                 </span>
                 {cart.count > 0 && <span className="hdr__cart-count">{cart.count}</span>}
               </Link>
->>>>>>> Stashed changes
+              
             </>
           )}
         </nav>
@@ -187,11 +209,34 @@ export default function Header() {
       {/* Category bar (pink) */}
       <div className="hdr__cats">
         <div className="container hdr__cats__inner">
-          <NavLink to="/birthday" className="cat">Birthday cake</NavLink>
-          <NavLink to="/mousse" className="cat">Mousse</NavLink>
-          <NavLink to="/cupcake" className="cat">Cupcake</NavLink>
-          <NavLink to="/cookies" className="cat">Cookies & Mini cake</NavLink>
-          <NavLink to="/choux" className="cat">Cream choux</NavLink>
+          {MENU_SECTIONS.map((section) => (
+            <div className="hdr__catWrap" key={section.slug}>
+              {/* Link chính của category */}
+              <NavLink
+                to={`/menu/${section.slug}`}
+                className={({ isActive }) =>
+                  "cat" + (isActive ? " active" : "")
+                }
+              >
+                {section.category}
+                <span className="cat__chevron">▾</span>
+              </NavLink>
+
+              {/* Dropdown: danh sách bánh */}
+              <div className="hdr__dropdown">
+                {section.items.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className="hdr__dropItem"
+                    onClick={() => scrollToMenuItem(item.id)}
+                  >
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </header>

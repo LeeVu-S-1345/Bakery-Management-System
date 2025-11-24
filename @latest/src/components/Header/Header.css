@@ -1,69 +1,66 @@
-/* ============ 1) MÀU & BIẾN CƠ BẢN (dễ chỉnh) ============ */
-:root{
-  --bg-cream: #FEF7EA;
-  --pink:       #f59cab;
-  --pink-strong:#f07a86;
-  --text:       #000000;
-  --muted:      #6b6b6b;
-
-  --white: #fff;
-  --line:  #e8e2d7;
-
-  --radius: 12px;          /* bo góc mềm, dễ nhìn */
-  --radius-round: 999px;   /* bo tròn viên thuốc */
-  --gap-sm: 8px;
-  --gap-md: 16px;
-  --gap-lg: 24px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+/* ================== BIẾN MÀU CƠ BẢN ================== */
+:root {
+  --cream-bg: #FEF7EA;
+  --pink-bar: #f59cab;
+  --pink-dark: #d94a4a; /* đổi từ hồng sang hồng đỏ */
+  --text-main: #2b2b2b;
+  --muted: #6b6b6b;
+  --beige-input: #f5f0e8;
+  --red-button: #BC0000; /* màu đỏ chính */
+  --red-dark: #C51616; /* đỏ đậm */
+  --green-button: #90ee90;
+  --blue-border: #0066ff;
 }
 
-/* ============ 2) KHỐI HEADER CHUNG ============ */
-.hdr{
-  background: var(--bg-cream);
-  color: var(--text);
-  width: 100%;
-  box-shadow: var(--shadow-sm);
+/* Container trong header có padding */
+.hdr .container {
+  padding-inline: 16px;
 }
 
-/* Hàng trên: logo + ô tìm kiếm + theo dõi + actions
-   Dùng flex cho dễ hiểu, tự xuống hàng khi hẹp */
-.hdr__top{
+/* ================== HEADER TOP (CREAM) ================== */
+
+.hdr {
+  background: var(--cream-bg);
+  color: var(--text-main);
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Hàng trên cùng: logo + search + track + actions */
+.hdr__top {
   display: flex;
   align-items: center;
-  gap: var(--gap-md);
-  flex-wrap: wrap;            /* nhỏ thì tự xuống hàng */
+  gap: 24px;
+  padding: 18px 0;
+  flex-wrap: wrap;
 }
 
+/* Logo */
+.hdr__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 
-.hdr__brand img{
-  height: 120px;
+.hdr__brand img {
+  height: 90px;
   width: auto;
   display: block;
+  object-fit: contain;
 }
 
-/* ============ 3) Ô TÌM KIẾM / TRA CỨU (dùng chung style) ============ */
-.hdr__search,
-.hdr__track{
+/* Ô search với thiết kế đơn giản, tinh tế */
+.hdr__search {
   display: flex;
   align-items: center;
-<<<<<<< Updated upstream
-  gap: var(--gap-sm);
-  border: 1px solid #6F6F6F;
-  padding: 8px 10px;
-  border-radius: var(--radius-round);
-  min-width: 220px;               /* đừng quá nhỏ */
-  flex: 1 1 260px;                /* co giãn hợp lý */
-}
-
-.hdr__search input,
-.hdr__track input{
-=======
   gap: 0;
   background: #ffffff;
   border-radius: 25px;
   border: 1px solid #e0d9c8;
   padding: 0;
-  flex: 1 1 260px;
+  flex: 1 1 280px;
   max-width: 320px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -91,7 +88,7 @@
 
 .hdr__search button {
   border: none;
-  background: white;
+  background: #ffffff;
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -100,13 +97,12 @@
   align-items: center;
   justify-content: center;
   margin: 4px;
-  color: #fff;
   font-size: 15px;
   flex-shrink: 0;
   transition: background 0.2s ease;
   padding: 0;
   font: inherit;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .hdr__search button svg {
@@ -117,8 +113,9 @@
 }
 
 .hdr__search button:hover {
-  background: var(--pink-bar);
+  background: #fff9f2;
 }
+
 .hdr__search button:hover svg {
   color: var(--pink-bar);
   stroke: var(--pink-bar);
@@ -133,7 +130,7 @@
   border-radius: 25px;
   border: 1px solid #d0e8ff;
   padding: 0;
-  flex: 1 1 240px;
+  flex: 1 1 260px;
   max-width: 320px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 102, 255, 0.1);
@@ -161,7 +158,7 @@
 
 .hdr__track button {
   border: none;
-  background: white;
+  background: #ffffff;
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -175,7 +172,7 @@
   transition: background 0.2s ease;
   padding: 0;
   font: inherit;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .hdr__track button svg {
@@ -186,7 +183,7 @@
 }
 
 .hdr__track button:hover {
-  background: #5a9bc7;
+  background: #fff9f2;
 }
 
 .hdr__track button:hover svg {
@@ -203,7 +200,6 @@
   flex-wrap: wrap;
   font-size: 14px;
   margin-left: auto;
-  flex: 0 0 auto;
   flex-shrink: 0;
 }
 
@@ -270,9 +266,7 @@
 
 .hdr__account {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  z-index: 400;
+  z-index: 600;
 }
 .hdr__accountMenu {
   position: absolute;
@@ -286,8 +280,7 @@
   gap: 4px;
   min-width: 180px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  z-index: 500;
-  pointer-events: auto;
+  z-index: 30;
 }
 .hdr__accountMenu button {
   border: none;
@@ -434,115 +427,78 @@
   white-space: nowrap;
   background: transparent;
   border: none;
->>>>>>> Stashed changes
   width: 100%;
-  border: 0;
-  outline: 0;
-  font-size: 14px;
-  background: transparent;
-  color: var(--text);
-}
-
-.hdr__search button,
-.hdr__track button{
-  border: 0;
-  background: #eee8dd;
-  border-radius: 50%;
-  width: 32px; height: 32px;
+  text-align: left;
   cursor: pointer;
-  transition: filter .2s ease;
-}
-.hdr__search button:hover,
-.hdr__track button:hover{
-  filter: brightness(0.95);
-}
-.hdr__search button:focus-visible,
-.hdr__track button:focus-visible{
-  outline: 2px solid var(--pink-strong);
-  outline-offset: 2px;
+  font: inherit;
 }
 
-/* ============ 4) KHU ACTIONS (đăng nhập, giỏ, v.v.) ============ */
-.hdr__actions{
-  display: flex;
-  align-items: center;
-  gap: var(--gap-md);
-  margin-left: auto;              /* đẩy sang phải */
-  flex-wrap: wrap;
+.hdr__dropItem:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
-.hdr__actions a,
-.hdr__actions .linklike{
-  color: var(--text);
-  text-decoration: none;
-  font-size: 14px;
-  transition: color .2s ease;
-}
-.hdr__actions a:hover,
-.hdr__actions .linklike:hover{
-  color: var(--muted);
-}
+/* ================== RESPONSIVE ================== */
 
-.icon-btn{
-  border: 1px solid #ddd;
-  background: var(--white);
-  border-radius: 50%;
-  width: 36px; height: 36px;
-  cursor: pointer;
-  display: inline-grid;
-  place-items: center;
-  transition: background .2s ease, border-color .2s ease;
-}
-.icon-btn:hover{
-  background: #f2f4f7;
-  border-color: #ccc;
-}
-.icon-btn:focus-visible{
-  outline: 2px solid var(--pink-strong);
-  outline-offset: 2px;
-}
-
-/* ============ 5) THANH DANH MỤC MÀU HỒNG ============ */
-.hdr__cats{
-  background: #FF8F91;
-}
-.hdr__cats__inner{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 80px;
-  padding: 10px 0px;
-  overflow-x: auto;               /* nhiều mục thì kéo ngang */
-  scrollbar-width: thin;
-}
-.hdr__cats__inner .cat{
-  color: #BC0000;                 /* chữ hồng đậm */
-  text-decoration: none;
-  font-weight: 600;
-  white-space: nowrap;            /* không xuống dòng giữa chừng */
-  transition: color .2s ease;
-}
-.hdr__cats__inner .cat:hover{
-  color: #4a0f0f;
-}
-.hdr__cats__inner .cat.active{
-  color: #3b0b0b;
-}
-
-/* ============ 6) RESPONSIVE ĐƠN GIẢN ============ */
-/* Tablet */
-@media (max-width: 1024px){
-  .hdr__top{
-    gap: var(--gap-sm);
+@media (max-width: 1024px) {
+  .hdr__top {
+    flex-wrap: wrap;
   }
-  .hdr__brand img{
-    height: 46px;
+
+  .hdr__search,
+  .hdr__track {
+    max-width: 100%;
+    flex: 1 1 300px;
+  }
+
+  .hdr__actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-left: 0;
+    margin-top: 8px;
   }
 }
 
-/* Mobile */
-@media (max-width: 640px){
-  .hdr__top{
-    padding: 12px var(--gap-md);
+@media (max-width: 768px) {
+  .hdr__top {
+    gap: 12px;
+  }
+
+  .hdr__brand img {
+    height: 75px;
+  }
+
+  .hdr__search,
+  .hdr__track {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .hdr__cats__inner {
+    gap: 16px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hdr__cats__inner::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hdr__actions {
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .hdr__actions a,
+  .icon-btn {
+    font-size: 13px;
+  }
+
+  .cat {
+    font-size: 14px;
+    padding: 6px 10px;
   }
 }

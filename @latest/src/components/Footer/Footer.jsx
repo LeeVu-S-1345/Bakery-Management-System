@@ -6,23 +6,6 @@ export default function Footer() {
 
   return (
     <footer className="ft">
-      {/* About band */}
-      <section className="ftAbout">
-        <div className="ftAbout__media">
-          {/* Ảnh trái */}
-          <img src="/images/about.png" alt="Cakes" />
-        </div>
-
-        <div className="ftAbout__content">
-          <h2 className="ftAbout__title">About Us</h2>
-          <p className="ftAbout__text">
-            At Savor Cake, we believe every cake tells a story of love and
-            happiness. We use the freshest ingredients, craft each design with
-            care, and deliver sweetness that brightens every celebration.
-          </p>
-        </div>
-      </section>
-
       {/* Red footer */}
       <section className="ftMain">
         <div className="container ftGrid">
