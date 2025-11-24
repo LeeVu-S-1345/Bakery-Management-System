@@ -7,8 +7,6 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pw2, setPw2] = useState("");
-  const [show, setShow] = useState(false);
-  const [show2, setShow2] = useState(false);
   const [agree, setAgree] = useState(false);
   const [err, setErr] = useState("");
   const navigate = useNavigate();
@@ -71,31 +69,27 @@ export default function SignUp() {
           <label className="field">
             <span className="field__icon" aria-hidden>🔒</span>
             <input
-              type={show ? "text" : "password"}
+              type="password"
               placeholder="Create a password"
               value={pw}
               onChange={(e) => setPw(e.target.value)}
               required
               minLength={6}
             />
-            <button type="button" className="field__suffix" onClick={() => setShow(s => !s)} aria-label={show ? "Hide password" : "Show password"}>
-              {show ? "🙈" : "👁️"}
-            </button>
+            <span className="field__suffix" />
           </label>
 
           <label className="field">
             <span className="field__icon" aria-hidden>✅</span>
             <input
-              type={show2 ? "text" : "password"}
+              type="password"
               placeholder="Confirm password"
               value={pw2}
               onChange={(e) => setPw2(e.target.value)}
               required
               minLength={6}
             />
-            <button type="button" className="field__suffix" onClick={() => setShow2(s => !s)} aria-label={show2 ? "Hide password" : "Show password"}>
-              {show2 ? "🙈" : "👁️"}
-            </button>
+            <span className="field__suffix" />
           </label>
 
           <label className="agree">
