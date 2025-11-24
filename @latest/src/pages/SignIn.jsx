@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false); // Loại bỏ state show
   const [err, setErr] = useState("");
   const auth = useAuth();
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function SignIn() {
     }
     // TODO: gọi API thật ở đây
     // giả sử đăng nhập OK:
-    auth.login ({email});
+    auth.login({ email });
     navigate("/"); // quay lại Home
   }
 
@@ -49,20 +49,13 @@ export default function SignIn() {
           <label className="field">
             <span className="field__icon" aria-hidden>🔒</span>
             <input
-              type={show ? "text" : "password"}
+              type="password" // Đổi type cố định thành "password"
               placeholder="Enter your password"
               value={pw}
               onChange={(e) => setPw(e.target.value)}
               required
             />
-            <button
-              type="button"
-              className="field__suffix"
-              aria-label={show ? "Hide password" : "Show password"}
-              onClick={() => setShow(s => !s)}
-            >
-              {show ? "🙈" : "👁️"}
-            </button>
+            {/* Loại bỏ nút Show/Hide mật khẩu */}
           </label>
 
           {err && <div className="signin__error">{err}</div>}

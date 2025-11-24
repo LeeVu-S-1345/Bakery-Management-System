@@ -2,9 +2,45 @@ import "./Cart.css";
 import { useCart } from "../context/CartContext.jsx";
 import { formatVND } from "../lib/money";
 import { Link } from "react-router-dom";
+<<<<<<< Updated upstream
+=======
+import Header from "../components/Header/Header.jsx";
+import Footer from "../components/Footer/Footer.jsx";
+import { useState } from "react";
+>>>>>>> Stashed changes
 
 export default function Cart() {
   const cart = useCart();
+  const [draftQty, setDraftQty] = useState({});
+
+  const updateDraft = (id, value) => {
+    setDraftQty((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const clearDraft = (id) => {
+    setDraftQty((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+  };
+
+  const handleQtyChange = (id, value) => {
+    if (!/^\d*$/.test(value)) return;
+    updateDraft(id, value);
+    if (value === "") return;
+    const num = Number(value);
+    if (!Number.isNaN(num) && num > 0) {
+      cart.setQty(id, num);
+    }
+  };
+
+  const handleQtyBlur = (id, value, currentQty) => {
+    if (value === "" || Number(value) <= 0) {
+      cart.setQty(id, currentQty);
+    }
+    clearDraft(id);
+  };
 
   if (cart.items.length === 0) {
     return (
@@ -36,13 +72,36 @@ export default function Cart() {
               </div>
 
               <div className="cart__qty">
-                <button onClick={() => cart.dec(it.id)} aria-label="Decrease">−</button>
+                <button
+                  onClick={() => {
+                    cart.dec(it.id);
+                    clearDraft(it.id);
+                  }}
+                  aria-label="Decrease"
+                >
+                  −
+                </button>
                 <input
-                  value={it.qty}
-                  onChange={(e) => cart.setQty(it.id, Number(e.target.value))}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={
+                    draftQty[it.id] !== undefined
+                      ? draftQty[it.id]
+                      : String(it.qty)
+                  }
+                  onChange={(e) => handleQtyChange(it.id, e.target.value)}
+                  onBlur={(e) => handleQtyBlur(it.id, e.target.value, it.qty)}
                 />
-                <button onClick={() => cart.inc(it.id)} aria-label="Increase">+</button>
-              </div>
+                <button
+                  onClick={() => {
+                    cart.inc(it.id);
+                    clearDraft(it.id);
+                  }}
+                  aria-label="Increase"
+                >
+                  +
+                </button>
+              </div>  
 
               <div className="cart__sum">{formatVND(it.price * it.qty)}</div>
               <button className="cart__remove" onClick={() => cart.remove(it.id)}>✕</button>
