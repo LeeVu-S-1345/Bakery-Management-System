@@ -14,11 +14,9 @@ export default function Account() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
         const res = await axios.get(`${API_URL}/auth/${auth.user.id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          withCredentials: true,
         });
 
         // cập nhật form bằng dữ liệu từ DB

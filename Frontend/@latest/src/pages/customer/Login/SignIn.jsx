@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext.jsx";
 import axios from "axios";
+import logoImg from '../../../assets/images/common/logo-sweet-bakery.png';
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function SignIn() {
@@ -31,14 +32,18 @@ export default function SignIn() {
       const res = await axios.post(`${API_URL}/auth/signin`, {
         email: email,
         password: pw,
-      });
+      }, {withCredentials: true});
 
       console.log("Login success:", res.data);
-      localStorage.setItem("token", res.data.token); // Save JWT token
-      const id = res.data.user.id;
-      const name = res.data.user.name;
-      auth.login ({id, email, name});
-      navigate(redirect ? `/${redirect}` : "/");
+      // localStorage.setItem("token", res.data.token); // Save JWT token
+      await auth.login(res.data.user);
+      if (redirect) {
+        navigate(`/${redirect}`);
+        return;
+      }
+      if (res.data.user.role == 2) navigate("/employee");
+      else if (res.data.user.role == 3) navigate("/manager/dashboard");
+      else navigate("/");
     } catch (err) {
       if (err.response) {
         // Response came from backend with an error message
@@ -53,7 +58,7 @@ export default function SignIn() {
   return (
     <main className="signin">
       <div className="signin__card">
-        <img className="signin__logo" src="/logo.png" alt="Sweet Bakery" />
+        <img className="signin__logo" src={logoImg} alt="Sweet Bakery" />
         <h1 className="signin__title">Sign in</h1>
 
         <form onSubmit={onSubmit} className="signin__form">

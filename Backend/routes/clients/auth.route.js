@@ -8,6 +8,8 @@ router.post("/signin", controller.signin);
 
 router.post("/signup", controller.signup);
 
+router.post("/logout", controller.logout);
+
 router.put("/:id", verifyToken, controller.updateUser);
 
 router.get("/:id", verifyToken, controller.userProfile);

@@ -4,8 +4,8 @@ import HomePage from "./pages/customer/HomePage.jsx";
 import AllMenu from "./pages/customer/AllMenu.jsx";
 import SignIn from "./pages/customer/Login/SignIn.jsx";
 import SignUp from "./pages/customer/Signup/SignUp.jsx";
-import Cart from "./pages/customer/Cart.jsx";
-import Checkout from "./pages/customer/Checkout.jsx";
+import Cart from "./pages/customer/Cart/Cart.jsx";
+import Checkout from "./pages/customer/Checkout/Checkout.jsx";
 import Account from "./pages/customer/Account/Account.jsx";
 //import cho employee
 import EmployeeDashboard from "./pages/employee/EmployeeDashboard";

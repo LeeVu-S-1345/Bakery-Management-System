@@ -1,7 +1,7 @@
 import "./Checkout.css";
 import { useMemo, useState } from "react";
-import { useCart } from "../../context/CartContext.jsx";
-import { formatVND } from "../../lib/money.js";
+import { useCart } from "../../../context/CartContext.jsx";
+import { formatVND } from "../../../lib/money.js";
 import { Link, useNavigate } from "react-router-dom";
 
 const CITIES = ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng"];
