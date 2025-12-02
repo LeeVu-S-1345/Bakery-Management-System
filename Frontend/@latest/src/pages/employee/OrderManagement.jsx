@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Table, Tag, Calendar, theme } from 'antd';
 // Import Component con vừa tạo
-import OrderDetail from '../../components/employee/Sidebar/OrderDetail/OrderDetail';
+import OrderDetail from '../../components/employee/OrderDetail/OrderDetail';
 
 const OrderManagement = () => {
   const { token } = theme.useToken();
