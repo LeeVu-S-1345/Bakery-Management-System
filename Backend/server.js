@@ -7,6 +7,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const route = require('./routes/clients/index.route');
+const routeEmployee = require('./routes/employee/index.route');
 // const routeAdmin = require('./routes/admin/index.route');
 
 // const systemConfig = require('./config/system');
@@ -55,6 +56,7 @@ app.set('view engine', 'pug');
 
 //Route
 route(app);
+routeEmployee(app);
 // routeAdmin(app);
 
 app.listen(port, () => {

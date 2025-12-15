@@ -1,20 +1,30 @@
 
 import "./Menu.css";
-import { MENU_SECTIONS } from "../../../data/menuData";
+import { getMenu } from "../../../data/menuData.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../../context/CartContext.jsx";
 import { formatVND } from "../../../lib/money";
+import { useEffect, useState } from "react";
 
 export default function MenuSection({ anchorId = "home-menu" }) {
+  const [sections, setSections] = useState([]);
   const cart = useCart();
   const nav = useNavigate();
+
+  useEffect(() => {
+    async function loadMenu() {
+      const menuData = await getMenu(); // get cached or fetch
+      setSections(menuData);
+    }
+    loadMenu();
+  }, []);
 
   return (
     <section className="menu" id={anchorId}>
       <div className="container">
         <h2 className="menu__title">OUR MENU</h2>
 
-        {MENU_SECTIONS.map((section) => (
+        {sections.map((section) => (
           <div key={section.slug} className="menu__category">
             <div className="menu__categoryBar">
               <span className="dot" />
@@ -22,7 +32,7 @@ export default function MenuSection({ anchorId = "home-menu" }) {
             </div>
 
             <div className="menu__grid">
-              {section.items.map((item) => (
+              {section.items.slice(0, 4).map((item) => (
                 <article
                   key={item.id}
                   id={`menu-item-${item.id}`}

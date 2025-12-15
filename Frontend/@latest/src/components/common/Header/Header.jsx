@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useCart } from "../../../context/CartContext.jsx";
 import { useAuth } from "../../../context/AuthContext.jsx";
-import { MENU_SECTIONS } from "../../../data/menuData.js";
+import { getMenu } from "../../../data/menuData.js";
 import logoImg from '../../../assets/images/common/logo-sweet-bakery.png'; 
 
 export default function Header() {
@@ -11,6 +11,7 @@ export default function Header() {
   const auth = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [menuSections, setMenuSections] = useState([]);
   const [trackId, setTrackId] = useState("");
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const accountRef = useRef(null);
@@ -25,6 +26,16 @@ export default function Header() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Load menu from backend or cache
+  useEffect(() => {
+    async function loadMenu() {
+      const menu = await getMenu(); // Cached or fetch
+      setMenuSections(menu);
+    }
+    loadMenu();
+  }, []);
+
   const scrollToMenuItem = (itemId) => {
     const targetId = `menu-item-${itemId}`;
     navigate("/menu", { state: { scrollToId: targetId } });
@@ -208,38 +219,14 @@ export default function Header() {
       </div>
 
       {/* Category bar (pink) */}
-      <div className="hdr__cats">
-        <div className="container hdr__cats__inner">
-          {MENU_SECTIONS.map((section) => (
-            <div className="hdr__catWrap" key={section.slug}>
-              {/* Link chính của category */}
-              <NavLink
-                to={`/menu/${section.slug}`}
-                className={({ isActive }) =>
-                  "cat" + (isActive ? " active" : "")
-                }
-              >
-                {section.category}
-                <span className="cat__chevron">▾</span>
-              </NavLink>
+      <nav className="mainNav">
+        <Link to="/">Home</Link>
+        <Link to="/menu">Menu</Link>
+        <Link to="/about">About Us</Link>
+        <Link to="/faq">Policy</Link>
+        <Link to="/contact">Contact</Link>
+      </nav>
 
-              {/* Dropdown: danh sách bánh */}
-              <div className="hdr__dropdown">
-                {section.items.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className="hdr__dropItem"
-                    onClick={() => scrollToMenuItem(item.id)}
-                  >
-                    {item.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </header>
   );
 }

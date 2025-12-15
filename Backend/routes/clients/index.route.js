@@ -2,6 +2,7 @@
 const homeRoute = require("./home.route");
 const authRoute = require("./auth.route");
 const orderRoute = require("./orders.route");
+const productRoute = require("./product.route");
 
 module.exports = (app) => {
     app.use('/', homeRoute);
@@ -10,5 +11,5 @@ module.exports = (app) => {
 
     app.use('/api/orders', orderRoute);
 
-    // app.use("/products", productRoute);
+    app.use("/menu", productRoute);
 }

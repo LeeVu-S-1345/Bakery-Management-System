@@ -1,10 +1,13 @@
 import { useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
+
 import Header from "../../../components/common/Header/Header.jsx";
 import Footer from "../../../components/common/Footer/Footer.jsx";
-import { MENU_SECTIONS } from "../../../data/menuData.js";
+
+import { getMenu } from "../../../data/menuData.js"; // ✅ use your cached loader
 import { formatVND } from "../../../lib/money.js";
 import { useCart } from "../../../context/CartContext.jsx";
+
 import "./SearchResults.css";
 
 export default function SearchResults() {
@@ -14,16 +17,14 @@ export default function SearchResults() {
   const query = new URLSearchParams(location.search).get("q") || "";
   const normalized = query.trim().toLowerCase();
 
-  const allItems = useMemo(
-    () =>
-      MENU_SECTIONS.flatMap((section) =>
-        section.items.map((item) => ({
-          ...item,
-          sectionName: section.category,
-        }))
-      ),
-    []
-  );
+  const allItems = useMemo(() => {
+    const products = getMenu();
+
+    return products.map((item) => ({
+      ...item,
+      sectionName: item.categoryLabel || item.category,
+    }));
+  }, []);
 
   const results =
     normalized.length === 0
@@ -39,6 +40,7 @@ export default function SearchResults() {
         <div className="container">
           <header className="searchPage__header">
             <p className="searchPage__eyebrow">Search results</p>
+
             <h1 className="searchPage__title">
               {normalized
                 ? `Found ${results.length} cake${
@@ -46,6 +48,7 @@ export default function SearchResults() {
                   } for “${query}”`
                 : "Please enter a cake name"}
             </h1>
+
             <p className="searchPage__actions">
               <Link to="/menu">Browse full menu →</Link>
             </p>
@@ -64,13 +67,17 @@ export default function SearchResults() {
                   <div className="searchCard__thumb">
                     <img src={item.image} alt={item.name} />
                   </div>
+
                   <div className="searchCard__body">
                     <p className="searchCard__category">{item.sectionName}</p>
+
                     <h3>{item.name}</h3>
+
                     <p className="searchCard__price">
                       {item.price ? formatVND(item.price) : "Contact us"}
                     </p>
                   </div>
+
                   <button
                     className="searchCard__btn"
                     onClick={() => cart.add(item)}

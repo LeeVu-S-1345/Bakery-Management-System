@@ -1,5 +1,7 @@
 // src/components/Sidebar.jsx
 import React from 'react';
+import { useAuth } from '../../../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 // Import Icon (Mình dùng icon cái bánh và bảng ghi chú cho giống hình)
 import { BiCake, BiClipboard } from "react-icons/bi"; 
@@ -9,6 +11,8 @@ import logoImg from '../../../assets/images/common/logo-sweet-bakery.png';
 import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
+  const auth = useAuth();
+  const nav = useNavigate();
   return (
     <aside className={styles.sidebar}>
       
@@ -53,7 +57,11 @@ const Sidebar = () => {
 
       {/* 3. LOGOUT SECTION */}
       <div className={styles.logoutContainer}>
-        <button className={styles.logoutButton}>
+        <button className={styles.logoutButton}
+        onClick={() => {
+          auth.logout();
+          nav("/employee/signin");
+        }}>
           Log out
         </button>
       </div>

@@ -5,9 +5,9 @@ export default function EmployeeRoute({ children }) {
   const auth = useAuth();
 
   // Chưa đăng nhập → vẫn cho vào (guest)
-  if (!auth.isAuthed) return children;
+  if (!auth.isAuthed) return <Navigate to="/employee/signin" replace />;
 
-  // Nếu là employee → chặn
+  // Nếu là customer → chặn
   if (auth.user.role === 1) return <Navigate to="/" replace />;
 
   // Nếu là manager → chặn

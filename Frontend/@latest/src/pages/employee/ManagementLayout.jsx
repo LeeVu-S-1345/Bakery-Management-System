@@ -7,6 +7,7 @@ import './ManagementLayout.css'; // Import CSS
 
 const MainLayout = () => {
   const [visible, setVisible] = useState(false);
+  const user = JSON.parse(localStorage.getItem('auth:user:v1')) || {};
 
   const showDrawer = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -20,9 +21,20 @@ const MainLayout = () => {
       </div>
 
       {/* --- SIDEBAR (DRAWER) --- */}
-      <Drawer title="Menu" placement="left" onClose={onClose} open={visible}>
-        <p><Link to="/orders" onClick={onClose}>Order Management</Link></p>
-        <p><Link to="/stock" onClick={onClose}>Stock Management</Link></p>
+      <Drawer title="Menu" placement="left" onClose={onClose} open={visible} className="custom-drawer">
+        <div className="drawer-menu-wrapper">
+          <Link to="/employee" className="drawer-menu-item" onClick={onClose}>
+            Dashboard
+          </Link>
+
+          <Link to="orders" className="drawer-menu-item" onClick={onClose}>
+            Order Management
+          </Link>
+
+          <Link to="stock" className="drawer-menu-item" onClick={onClose}>
+            Stock Management
+          </Link>
+        </div>
       </Drawer>
 
       {/* --- MAIN CONTENT --- */}
@@ -31,8 +43,8 @@ const MainLayout = () => {
         <div className="user-info-card">
           <div className="user-avatar"><UserOutlined /></div>
           <div>
-            <div style={{ fontWeight: 'bold', fontSize: '14px' }}>Ngo Minh Ngoc - Employee</div>
-            <div style={{ fontSize: '12px', color: '#888' }}>Mail: ngoc.mn235984@sis.hust.edu.vn</div>
+            <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{user.name} - Employee</div>
+            <div style={{ fontSize: '12px', color: '#888' }}>Mail: {user.email}</div>
           </div>
         </div>
 
