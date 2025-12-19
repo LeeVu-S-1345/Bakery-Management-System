@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import Header from "../../../components/common/Header/Header.jsx";
@@ -13,24 +13,29 @@ import "./SearchResults.css";
 export default function SearchResults() {
   const location = useLocation();
   const cart = useCart();
+  const [products, setProducts] = useState([]);
 
-  const query = new URLSearchParams(location.search).get("q") || "";
+  useEffect(() => {
+    getMenu().then((data) => setProducts(data));
+  }, []);
+
+  const query = new URLSearchParams(location.search).get("product") || "";
   const normalized = query.trim().toLowerCase();
 
   const allItems = useMemo(() => {
-    const products = getMenu();
-
     return products.map((item) => ({
       ...item,
       sectionName: item.categoryLabel || item.category,
     }));
-  }, []);
+  }, [products]);
 
   const results =
     normalized.length === 0
       ? []
-      : allItems.filter((item) =>
-          item.name.toLowerCase().includes(normalized)
+      : allItems.flatMap(section =>
+          section.items.filter(product =>
+            product.name?.toLowerCase().includes(normalized)
+          )
         );
 
   return (

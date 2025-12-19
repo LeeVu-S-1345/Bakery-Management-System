@@ -9,22 +9,22 @@ import Header from "../../../components/common/Header/Header.jsx";
 import Footer from "../../../components/common/Footer/Footer.jsx";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
-const CITIES = ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng"];
+const CITIES = ["Ha Noi", "Ho Chi Minh City", "Da Nang"];
 const DISTRICTS = {
-  "Hà Nội": ["Ba Đình", "Hai Bà Trưng", "Cầu Giấy"],
-  "TP. Hồ Chí Minh": ["Quận 1", "Quận 3", "Bình Thạnh"],
-  "Đà Nẵng": ["Hải Châu", "Sơn Trà", "Thanh Khê"],
+  "Ha Noi": ["Ba Dinh", "Hai Ba Trung", "Cau Giay"],
+  "Ho Chi Minh City": ["Quan 1", "Quan 3", "Binh Thanh"],
+  "Da Nang": ["Hai Chau", "Son Tra", "Thanh Khe"],
 };
 const WARDS = {
-  "Ba Đình": ["Phúc Xá", "Trúc Bạch", "Liễu Giai"],
-  "Hai Bà Trưng": ["Bạch Mai", "Thanh Nhàn", "Vĩnh Tuy"],
-  "Cầu Giấy": ["Dịch Vọng", "Nghĩa Tân", "Yên Hòa"],
-  "Quận 1": ["Bến Nghé", "Bến Thành"],
-  "Quận 3": ["Võ Thị Sáu", "Phường 7"],
-  "Bình Thạnh": ["26", "25"],
-  "Hải Châu": ["Hòa Thuận", "Thanh Bình"],
-  "Sơn Trà": ["An Hải Bắc", "Phước Mỹ"],
-  "Thanh Khê": ["An Khê", "Chính Gián"],
+  "Ba Đinh": ["Phuc Xa", "Truc Bach", "Lieu Giai"],
+  "Hai Ba Trung": ["Bach Mai", "Thanh Nhan", "Vinh Tuy"],
+  "Cau Giay": ["Dich Vong", "Nghia Tan", "Yen Hoa"],
+  "Quan 1": ["Ben Nghe", "Ben Thanh"],
+  "Quan 3": ["Vo Thi Sau", "Phuong 7"],
+  "Binh Thanh": ["26", "25"],
+  "Hai Chau": ["Hoa Thuan", "Thanh Binh"],
+  "Son Tra": ["An Hai Bac", "Phuoc My"],
+  "Thanh Khe": ["An Khe", "Chinh Gian"],
 };
 
 export default function Checkout() {
@@ -36,9 +36,9 @@ export default function Checkout() {
   const [receiverSame, setReceiverSame] = useState(true);
   const [receiver, setReceiver] = useState({ name: "", phone: "" });
 
-  const [city, setCity] = useState("Hà Nội");
-  const [district, setDistrict] = useState("Hai Bà Trưng");
-  const [ward, setWard] = useState("Bạch Mai");
+  const [city, setCity] = useState("Ha Noi");
+  const [district, setDistrict] = useState("Hai Ba Trung");
+  const [ward, setWard] = useState("Bach Mai");
   const [street, setStreet] = useState("");
 
   const [invoice, setInvoice] = useState(false);
@@ -99,7 +99,7 @@ export default function Checkout() {
       placedAt,
       customer,
       receiver: receiverSame ? customer : receiver,
-      address: { city, district, ward, street },
+      address: `${street}, ${ward}, ${district}, ${city}`,
       invoice,
       time: { date, slot },
       payment,

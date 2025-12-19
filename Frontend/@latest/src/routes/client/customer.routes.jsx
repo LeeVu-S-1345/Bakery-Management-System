@@ -14,126 +14,157 @@ import OrderTracking from "../../pages/customer/OrderTracking/OrderTracking.jsx"
 import AboutPage from "../../pages/customer/AboutPage.jsx";
 import ContactPage from "../../pages/customer/ContactPage.jsx";
 import FaqPage from "../../pages/customer/FaqPage.jsx";
+import PublicLayout from "../../layouts/PublicLayout.jsx";
 
 export const customerRoutes = [
     {
         path: "/",
         element: (
-          <CustomerRoute>
-            <HomePage />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <HomePage />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/menu",
         element: (
-          <CustomerRoute>
-            <AllMenu />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <AllMenu />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/menu/:slug",
         element: (
-          <CustomerRoute>
-            <AllMenu />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <AllMenu />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
   {
         path: "/search",
         element: (
-          <CustomerRoute>
-            <SearchResults />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <SearchResults />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/signin",
         element: (
-          <CustomerRoute>
-            <SignInPages />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <SignInPages />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/signup",
         element: (
-          <CustomerRoute>
-            <SignUpPages />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <SignUpPages />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/about",
         element: (
-          <CustomerRoute>
-            <AboutPage />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <AboutPage />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/contact",
         element: (
-          <CustomerRoute>
-            <ContactPage />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <ContactPage />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/faq",
         element: (
-          <CustomerRoute>
-            <FaqPage />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <FaqPage />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/cart",
         element: (
-          <CustomerRoute>
-            <Cart />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <Cart />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/checkout",
         element: (
-          <CustomerRoute>
-            <Checkout />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <Checkout />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/account",
         element: (
-          <CustomerRoute>
-            <Account />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <Account />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/orders",
         element: (
-          <CustomerRoute>
-            <HistoryPage />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <HistoryPage />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/order-success/:orderId",
         element: (
-          <CustomerRoute>
-            <OrderSuccess />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <OrderSuccess />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
     {
         path: "/track/:orderId",
         element: (
-          <CustomerRoute>
-            <OrderTracking />
-          </CustomerRoute>
+          <PublicLayout>
+            <CustomerRoute>
+              <OrderTracking />
+            </CustomerRoute>
+          </PublicLayout>
         ),
     },
 ];

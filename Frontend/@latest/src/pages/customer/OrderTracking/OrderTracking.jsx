@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../../../components/common/Header/Header.jsx";
 import Footer from "../../../components/common/Footer/Footer.jsx";
@@ -24,6 +24,7 @@ export default function OrderTracking() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchOrder() {
@@ -35,6 +36,13 @@ export default function OrderTracking() {
         });
         setOrder(res.data);
       } catch (err) {
+        if (err.response?.status === 401) {
+          const redirect = encodeURIComponent(
+            location.pathname
+          );
+          navigate(`/signin?redirect=track/${orderId}`, { replace: true });
+          return;
+        }
         setError(err.response?.data?.error || "Order not found");
       } finally {
         setLoading(false);
@@ -45,6 +53,7 @@ export default function OrderTracking() {
   }, [orderId]);
 
   if (loading) return <p>Loading...</p>;
+  if (!order && !error) return null;
 
   return (
     <>
@@ -83,21 +92,23 @@ export default function OrderTracking() {
 
               <div className="trackMeta">
                 <div>
-                  <span>Recipient</span>
-                  <strong>{order.receiver?.name}</strong>
-                  <p>{order.receiver?.phone}</p>
+                  <span>Recipient </span>
+                  <strong>{order.receiver}</strong>
+                </div>
+                <div>
+                  <span>Phone </span>
+                  <strong>{order.receive_phone}</strong>
                 </div>
                 <div>
                   <span>Address</span>
                   <p>
-                    {order.address?.street}, {order.address?.ward},{" "}
-                    {order.address?.district}, {order.address?.city}
+                    {order.receive_address}
                   </p>
                 </div>
                 <div>
                   <span>Expected delivery date</span>
                   <p>
-                    {order.time?.date} · {order.time?.slot}
+                    {new Date(order.receive_date).toLocaleDateString()} - {order.receive_time}
                   </p>
                 </div>
               </div>

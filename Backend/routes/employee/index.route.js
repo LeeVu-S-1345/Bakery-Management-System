@@ -1,5 +1,5 @@
-// const productRoute = require("./product.route");
-// const homeRoute = require("./home.route");
+const orderRoute = require("./order.route");
+const stockRoute = require("./stock.route");
 const authRoute = require("./auth.route");
 
 module.exports = (app) => {
@@ -7,5 +7,7 @@ module.exports = (app) => {
 
     app.use('/employee/auth', authRoute);
 
-    // app.use("/products", productRoute);
+    app.use("/employee/order", orderRoute);
+
+    app.use("/employee/stock", stockRoute);
 }

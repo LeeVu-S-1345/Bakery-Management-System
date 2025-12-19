@@ -5,9 +5,17 @@ import styles from './OrderDetail.module.css';
 
 const { TextArea } = Input;
 
-const OrderDetail = ({ open, onCancel, order }) => {
+const OrderDetail = ({ open, onCancel, order, detail }) => {
   // Nếu chưa chọn order nào thì không render gì cả
   if (!order) return null;
+
+  const shippingCost = () => {
+    let cost = Number(order.total.replace(/\D/g, ""));
+    for (let item of detail) {
+      cost = cost - item.price * item.quantity;
+    }
+    return cost;
+  }
 
   return (
     <Modal
@@ -33,12 +41,12 @@ const OrderDetail = ({ open, onCancel, order }) => {
             <table className={styles.infoTable}>
               <tbody>
                 <tr>
-                  <td className={styles.cellBold}>Full name</td>
-                  <td className={styles.cell}>{order.customer}</td>
+                  <td className={styles.cellBold}>Receiver</td>
+                  <td className={styles.cell}>{order.receiver}</td>
                 </tr>
                 <tr>
                   <td className={styles.cellBold}>Phone number</td>
-                  <td className={styles.cell}>{order.phone}</td>
+                  <td className={styles.cell}>{order.receive_phone}</td>
                 </tr>
                 <tr>
                   <td className={styles.cellBold}>Address</td>
@@ -46,11 +54,11 @@ const OrderDetail = ({ open, onCancel, order }) => {
                 </tr>
                 <tr>
                   <td className={styles.cellBold}>Receiving date</td>
-                  <td className={styles.cell}>12/10/2025</td>
+                  <td className={styles.cell}>{order.receive_date}</td>
                 </tr>
                 <tr>
                   <td className={styles.cellBold}>Receiving time</td>
-                  <td className={styles.cell}>5pm - 5h30pm</td>
+                  <td className={styles.cell}>{order.receive_time}</td>
                 </tr>
                 <tr>
                   <td className={styles.cellBold}>Note</td>
@@ -73,13 +81,12 @@ const OrderDetail = ({ open, onCancel, order }) => {
                 </tr>
               </thead>
               <tbody>
-                {/* Mock data sản phẩm */}
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <tr key={item}>
-                    <td className={styles.cell}>{item}</td>
-                    <td className={styles.cell}>E634KT</td>
-                    <td className={styles.cell}>{item === 2 ? 2 : 1}</td>
-                    <td className={styles.cell}>{item === 5 ? '599.000 đ' : '299.000 đ'}</td>
+                {detail?.map((item, index) => (
+                  <tr key={item.prod_id}>
+                    <td className={styles.cell}>{index + 1}</td>
+                    <td className={styles.cell}>{item.prod_id}</td>
+                    <td className={styles.cell}>{item.quantity}</td>
+                    <td className={styles.cell}>{item.price.toLocaleString()} đ</td>
                   </tr>
                 ))}
               </tbody>
@@ -87,7 +94,7 @@ const OrderDetail = ({ open, onCancel, order }) => {
 
             <div className={styles.shippingRow}>
               <span>Shipping Cost</span>
-              <span>30.000 đ</span>
+              <span>{shippingCost()} đ</span>
             </div>
             <div className={styles.totalRow}>
               <span className={styles.totalLabel}>Total</span>

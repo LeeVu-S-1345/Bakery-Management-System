@@ -37,6 +37,19 @@ class Product {
             throw error;
         }
     }
+
+    static async getStock() {
+        try {
+            const query = `SELECT p.id, p.name, price, stock, c.name as category FROM product p
+                            JOIN category c ON p.category_id = c.id
+                            ORDER BY p.id;`
+            const res = await pool.query(query);
+            return res.rows;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }
 
 module.exports = Product;

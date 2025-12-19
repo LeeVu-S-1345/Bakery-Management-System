@@ -1,31 +1,38 @@
-import EmployeeDashboard from "../../pages/employee/EmployeeDashboard";
+import EmployeeDashboard from "../../pages/employee/EmployeeDashboard/EmployeeDashboard.jsx";
 import ManagementLayout from "../../pages/employee/ManagementLayout.jsx";
-import OrderManagement from "../../pages/employee/OrderManagement.jsx";
-import StockManagement from "../../pages/employee/StockManagement.jsx";
+import OrderManagement from "../../pages/employee/OrderManagement/OrderManagement.jsx";
+import StockManagement from "../../pages/employee/StockManagement/StockManagement.jsx";
 import SigninPages from "../../pages/employee/Login/SignIn.jsx";
 import EmployeeRoute from "./EmployeeRoute.jsx";
+import PublicLayout from "../../layouts/PublicLayout.jsx";
 
 export const employeeRoutes = [
     {
         path: "/employee",
         element: (
-        <EmployeeRoute>
-            <EmployeeDashboard />
-        </EmployeeRoute>
+        <PublicLayout>
+            <EmployeeRoute>
+                <EmployeeDashboard />
+            </EmployeeRoute>
+        </PublicLayout>
         ),
     },
     {
         path: "/employee/signin",
         element: (
-        <SigninPages />
+        <PublicLayout>
+            <SigninPages/>
+        </PublicLayout>
         ),
     },
     {
         path: "/employee/management",
         element: (
-        <EmployeeRoute>
-            <ManagementLayout />
-        </EmployeeRoute>
+        <PublicLayout>
+            <EmployeeRoute>
+                <ManagementLayout />
+            </EmployeeRoute>
+        </PublicLayout>
         ),
         children: [
         { path: "orders", element: <OrderManagement /> },

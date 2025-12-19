@@ -50,7 +50,7 @@ export default function Header() {
     event.preventDefault();
     const term = searchTerm.trim();
     if (!term) return;
-    navigate(`/search?q=${encodeURIComponent(term)}`);
+    navigate(`/search?product=${encodeURIComponent(term)}`);
     setSearchTerm("");
   };
 

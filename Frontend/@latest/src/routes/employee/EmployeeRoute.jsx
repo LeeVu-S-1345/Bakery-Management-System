@@ -14,5 +14,5 @@ export default function EmployeeRoute({ children }) {
   if (auth.user.role === 3) return <Navigate to="/manager/dashboard" replace />;
 
   // Nếu là customer → cho phép
-  return children;
+  return <>{children}</>;
 }

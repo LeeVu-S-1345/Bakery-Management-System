@@ -2,8 +2,8 @@
 import React from 'react';
 import { PiUserCircleLight } from "react-icons/pi";
 import styles from './EmployeeDashboard.module.css';
-import Sidebar from '../../components/employee/Sidebar/Sidebar';
-import cakeImage from '../../assets/images/employee/dashboard/fruit-cream-bread.png';
+import Sidebar from '../../../components/employee/Sidebar/Sidebar';
+import cakeImage from '../../../assets/images/employee/dashboard/fruit-cream-bread.png';
 
 const EmployeeDashboard = () => {
   const user = JSON.parse(localStorage.getItem("auth:user:v1")) || { name: "Employee" };

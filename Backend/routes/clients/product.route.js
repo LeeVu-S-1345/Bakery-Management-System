@@ -5,6 +5,6 @@ const controller = require("../../controller/clients/product.controller");
 const verifyToken = require('../../middleware/auth.middleware');
 const { authorize } = require('../../middleware/authorize.middleware');
 
-router.get("/", verifyToken, authorize(1), controller.getMenu);
+router.get("/", controller.getMenu);
 
 module.exports = router;

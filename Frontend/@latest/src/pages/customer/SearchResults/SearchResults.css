@@ -39,7 +39,7 @@
 
 .searchPage__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 260px));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 240px));
   gap: 20px;
   justify-content: flex-start;
   padding-left: 8px;

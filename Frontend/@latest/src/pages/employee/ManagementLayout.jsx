@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Drawer } from 'antd';
 import { MenuOutlined, UserOutlined } from '@ant-design/icons';
-import './ManagementLayout.css'; // Import CSS
+// Import icon từ react-icons (Giống hình mẫu nhất)
+import { BiCake, BiClipboard, BiGridAlt } from "react-icons/bi"; 
+
+import './ManagementLayout.css';
 
 const MainLayout = () => {
   const [visible, setVisible] = useState(false);
@@ -21,17 +24,36 @@ const MainLayout = () => {
       </div>
 
       {/* --- SIDEBAR (DRAWER) --- */}
-      <Drawer title="Menu" placement="left" onClose={onClose} open={visible} className="custom-drawer">
-        <div className="drawer-menu-wrapper">
-          <Link to="/employee" className="drawer-menu-item" onClick={onClose}>
+      <Drawer 
+        // 1. Bỏ title, bỏ nút đóng X để nó chỉ còn là các khối màu
+        title={null} 
+        closable={false}
+        
+        placement="left" 
+        onClose={onClose} 
+        open={visible}
+        
+        // Class này để ăn CSS vừa viết
+        rootClassName="custom-drawer" 
+        
+        width={300}
+        
+        // 2. Làm mờ nền ít thôi cho đỡ tối (Optional)
+        maskStyle={{ backgroundColor: 'rgba(0,0,0,0.1)' }}
+      >
+        <div className="sidebar-menu">
+          <Link to="/employee" className="sidebar-item" onClick={onClose}>
+            <BiGridAlt className="sidebar-icon" />
             Dashboard
           </Link>
 
-          <Link to="orders" className="drawer-menu-item" onClick={onClose}>
+          <Link to="/employee/management/orders" className="sidebar-item" onClick={onClose}>
+            <BiCake className="sidebar-icon" />
             Order Management
           </Link>
 
-          <Link to="stock" className="drawer-menu-item" onClick={onClose}>
+          <Link to="/employee/management/stock" className="sidebar-item" onClick={onClose}>
+            <BiClipboard className="sidebar-icon" />
             Stock Management
           </Link>
         </div>
@@ -39,7 +61,6 @@ const MainLayout = () => {
 
       {/* --- MAIN CONTENT --- */}
       <div style={{ flex: 1, padding: '0 40px' }}>
-        {/* User Info Section (Dùng chung cho cả 2 trang) */}
         <div className="user-info-card">
           <div className="user-avatar"><UserOutlined /></div>
           <div>
@@ -48,7 +69,6 @@ const MainLayout = () => {
           </div>
         </div>
 
-        {/* Nội dung thay đổi (Order hoặc Stock) sẽ hiện ở đây */}
         <Outlet />
       </div>
 

@@ -4,9 +4,9 @@ class Order {
     static async createOrder(data) {
         try {
             const query = `INSERT INTO orders
-                        (id, orderdate, customer_id, total_amount, payment, receive_time, receive_date, note)
-                        VALUES ($1, CURRENT_DATE, $2, $3, $4, $5, $6, $7) RETURNING id`;
-            const values = [data.id, data.cus_id, data.prices.total, data.payment, data.time.slot, data.time.date, data.customer.note];
+                        (id, orderdate, customer_id, total_amount, payment, receive_time, receive_date, note, receive_address, receiver, receive_phone)
+                        VALUES ($1, CURRENT_DATE, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`;
+            const values = [data.id, data.cus_id, data.prices.total, data.payment, data.time.slot, data.time.date, data.customer.note, data.address, data.receiver.name, data.receiver.phone];
             const res = await pool.query(query, values);
             
             for(let item of data.items){
@@ -49,6 +49,37 @@ class Order {
             const values = [orderId];
             const res = await pool.query(query, values);
             return res.rows[0];
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async getAllOrdersByDate(data){
+        try {
+            const query = `SELECT orders.id, fullname, receive_phone, ordertime, total_amount, orders.status,
+                            receive_date, receive_time, receive_address, receiver, phone FROM orders
+                           JOIN customer ON orders.customer_id = customer.user_id
+                           JOIN useraccount ON customer.user_id = useraccount.id
+                           WHERE orderdate = $1
+                           ORDER BY ordertime;`
+            const value = [data]
+            const res = await pool.query(query, value);
+            return res.rows;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async getOrderDatail(orderId) {
+        try {
+            const query = `SELECT prod_id, quantity, p.price FROM orderline o
+                           JOIN product p ON o.prod_id = p.id
+                           WHERE o.order_id = $1;`
+            const values = [orderId];
+            const res = await pool.query(query, values);
+            return res.rows;
         } catch (error) {
             console.error(error);
             throw error;

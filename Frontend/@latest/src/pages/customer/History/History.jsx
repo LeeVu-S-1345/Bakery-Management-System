@@ -67,7 +67,7 @@ export default function HistoryPage() {
                       </div>
                       <div>
                         <p className="historyLabel">Date</p>
-                        <strong>{order.orderdate}</strong>
+                        <strong>{new Date(order.orderdate).toLocaleDateString()}</strong>
                       </div>
                       <div>
                         <p className="historyLabel">Status</p>
