@@ -53,3 +53,19 @@
   margin-bottom: 10px;
   font-weight: bold;
 }
+
+.right-side-bar {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-order-button {
+  width: 150px;
+  height: 50px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background-color: #b71c1c;
+  color: white;
+}

@@ -5,6 +5,7 @@ import axios from "axios";
 import api from "../../../lib/axios";
 import dayjs from "dayjs";
 import OrderDetail from "../../../components/employee/OrderDetail/OrderDetail";
+import AddOrderModal from "../../../components/employee/AddOrderModal/AddOrderModal"
 import "./OrderManagement.css";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -25,6 +26,7 @@ const OrderManagement = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [selectedOrderDetail, setSelectedOrderDetail] = useState(null);
+  const [isAddOrderOpen, setIsAddOrderOpen] = useState(false);
 
   // --- DỮ LIỆU GIẢ (MOCK DATA) ---
   const MOCK_ORDERS = [
@@ -130,6 +132,30 @@ const OrderManagement = () => {
     },
   ];
 
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // State quản lý modal thêm mới
+
+  // Hàm xử lý khi bấm Save ở Modal thêm mới
+  const handleSaveNewOrder = (newOrderData) => {
+    console.log("Dữ liệu đơn hàng mới:", newOrderData);
+    
+    // Logic giả lập thêm vào bảng (Thực tế bạn sẽ gọi API ở đây)
+    const newOrder = {
+      id: Math.floor(Math.random() * 100000), // Tạo ID giả
+      customer: newOrderData.receiver,
+      phone: newOrderData.phone,
+      time: dayjs().format("HH:mm:ss"),
+      total: `${newOrderData.total.toLocaleString()} đ`,
+      status: "pending",
+      receive_date: newOrderData.date.format("YYYY-MM-DD"),
+      receive_time: newOrderData.time.format("HH:mm"),
+      address: newOrderData.address,
+      receiver: newOrderData.receiver,
+      note: newOrderData.note
+    };
+    setOrders([newOrder, ...orders]); // Thêm vào đầu danh sách
+    message.success("New order created successfully!");
+  }
+
   // Fetch orders from backend
   useEffect(() => {
     const fetchOrders = async (date) => {
@@ -227,18 +253,27 @@ const OrderManagement = () => {
           />
         </div>
 
-        <div
-          className="order-calendar"
-          style={{
-            border: `1px solid ${token.colorBorderSecondary}`,
-            borderRadius: token.borderRadiusLG,
-          }}
-        >
-          <div className="calendar-title">Calendar</div>
-          <Calendar
-            fullscreen={false}
-            value={selectedDate}
-            onSelect={handleDateSelect}/>
+        <div className = "right-side-bar">
+
+          <button 
+            className= "add-order-button"
+            onClick = { () => setIsAddOrderOpen(true)}>
+            ADD ORDER
+          </button>
+
+          <div
+            className="order-calendar"
+            style={{
+              border: `1px solid ${token.colorBorderSecondary}`,
+              borderRadius: token.borderRadiusLG,
+            }}
+          >
+            <div className="calendar-title">Calendar</div>
+            <Calendar
+              fullscreen={false}
+              value={selectedDate}
+              onSelect={handleDateSelect}/>
+          </div>
         </div>
       </div>
 
@@ -249,6 +284,14 @@ const OrderManagement = () => {
         detail={selectedOrderDetail}
         onStatusChange={handleStatusChange}
       />
+
+      {/* --- Thêm Modal mới vào đây --- */}
+      <AddOrderModal
+        open={isAddOrderOpen}
+        onCancel={() => setIsAddOrderOpen(false)}
+        onSave={handleSaveNewOrder}
+      />
+
     </div>
   );
 };
