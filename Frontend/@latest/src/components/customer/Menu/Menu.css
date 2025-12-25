@@ -46,9 +46,6 @@
 }
 .menu__btn:hover { background: #C51616; }
 
-@media (max-width: 560px) {
-  .menu__img { height: 140px; }
-}
 .menu__seeMoreWrap { text-align: center; margin-top: 12px; }
 .menu__seeMore {
   display: inline-flex; align-items: center; gap: 6px;
@@ -68,4 +65,88 @@
   background: #ffe6e6; 
   border-color: #C51616;
   color: #C51616;
+}
+
+@media (max-width: 768px) {
+  .menu {
+    padding: 40px 0;
+  }
+  
+  .menu__title {
+    font-size: clamp(24px, 5vw, 32px);
+    margin-bottom: 20px;
+  }
+  
+  .menu__category {
+    margin: 32px 0 40px;
+  }
+  
+  .menu__grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  
+  .menu__card {
+    padding: 12px;
+  }
+  
+  .menu__img {
+    height: 150px;
+  }
+  
+  .menu__name {
+    font-size: 15px;
+  }
+  
+  .menu__row {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .menu__btn, .menu__btnSecondary {
+    width: 100%;
+    padding: 7px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .menu {
+    padding: 32px 0;
+  }
+  
+  .menu__title {
+    font-size: clamp(20px, 6vw, 28px);
+    margin-bottom: 16px;
+  }
+  
+  .menu__category {
+    margin: 24px 0 32px;
+  }
+  
+  .menu__categoryTitle {
+    font-size: 1.1rem;
+  }
+  
+  .menu__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .menu__img { 
+    height: 140px; 
+  }
+  
+  .menu__name {
+    font-size: 14px;
+  }
+  
+  .menu__price {
+    font-size: 0.9rem;
+  }
+  
+  .menu__btn, .menu__btnSecondary {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
 }

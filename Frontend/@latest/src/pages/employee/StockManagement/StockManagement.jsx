@@ -28,6 +28,23 @@ const StockManagement = () => {
     const fetchStock = async () => {
       try {
         setLoading(true);
+        
+        // Check if we should use mock data
+        const { mockApi } = await import("../../../lib/mockApi.js");
+        if (mockApi.shouldUseMock()) {
+          const mockData = await mockApi.getStock();
+          const formattedData = mockData.map((item) => ({
+            sku: item.id,
+            name: item.name,
+            category: item.category,
+            price: item.price,
+            count: item.stock,
+          }));
+          setData(formattedData);
+          setLoading(false);
+          return;
+        }
+
         const res = await api.get(`/employee/stock`);
 
         const formattedData = res.data.map((item) => ({

@@ -36,8 +36,15 @@ export default function SignUp() {
       setErr("Please agree to the Terms & Privacy.");
       return;
     }
-    // TODO: call API signup here
-     try {
+    try {
+      // Check if we should use mock data
+      const { mockApi } = await import("../../../lib/mockApi.js");
+      if (mockApi.shouldUseMock()) {
+        await mockApi.signup({ email, password: pw, fullname: name });
+        navigate("/signin"); // sau khi đăng ký mock, chuyển sang Sign in
+        return;
+      }
+
       const res = await axios.post(`${API_URL}/auth/signup`, {
         email,
         password: pw,

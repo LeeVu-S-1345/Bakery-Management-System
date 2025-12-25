@@ -28,6 +28,24 @@ const ProductManagement = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      
+      // Check if we should use mock data
+      const { mockApi } = await import("../../lib/mockApi.js");
+      if (mockApi.shouldUseMock()) {
+        const mockData = await mockApi.getProducts();
+        const formattedData = mockData.map((item) => ({
+          sku: item.id,
+          name: item.name,
+          category: item.category,
+          price: item.price,
+          count: item.stock,
+          description: item.description,
+        }));
+        setProducts(formattedData);
+        setLoading(false);
+        return;
+      }
+
       const res = await api.get(`/manager/products`);
       const formattedData = res.data.map((item) => ({
           sku: item.id,
@@ -40,7 +58,22 @@ const ProductManagement = () => {
       setProducts(formattedData);
     } catch (err) {
       console.error(err);
-      setError("Failed to load products");
+      // Try mock data as fallback
+      try {
+        const { mockApi } = await import("../../lib/mockApi.js");
+        const mockData = await mockApi.getProducts();
+        const formattedData = mockData.map((item) => ({
+          sku: item.id,
+          name: item.name,
+          category: item.category,
+          price: item.price,
+          count: item.stock,
+          description: item.description,
+        }));
+        setProducts(formattedData);
+      } catch (mockErr) {
+        setError("Failed to load products");
+      }
     } finally {
       setLoading(false);
     }

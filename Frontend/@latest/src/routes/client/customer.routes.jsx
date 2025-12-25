@@ -8,6 +8,7 @@ import SignUpPages from "../../pages/customer/Signup/SignUp.jsx";
 import Cart from "../../pages/customer/Cart/Cart.jsx";
 import Checkout from "../../pages/customer/Checkout/Checkout.jsx";
 import Account from "../../pages/customer/Account/Account.jsx";
+import ChangePassword from "../../pages/customer/ChangePassword/ChangePassword.jsx";
 import HistoryPage from "../../pages/customer/History/History.jsx";
 import OrderSuccess from "../../pages/customer/OrderSuccess/OrderSuccess.jsx";
 import OrderTracking from "../../pages/customer/OrderTracking/OrderTracking.jsx";
@@ -133,6 +134,16 @@ export const customerRoutes = [
           <PublicLayout>
             <CustomerRoute>
               <Account />
+            </CustomerRoute>
+          </PublicLayout>
+        ),
+    },
+    {
+        path: "/change-password",
+        element: (
+          <PublicLayout>
+            <CustomerRoute>
+              <ChangePassword />
             </CustomerRoute>
           </PublicLayout>
         ),

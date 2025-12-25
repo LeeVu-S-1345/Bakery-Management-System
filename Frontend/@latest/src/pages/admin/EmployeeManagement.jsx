@@ -23,6 +23,24 @@ const EmployeeManagement = () => {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
+      
+      // Check if we should use mock data
+      const { mockApi } = await import("../../lib/mockApi.js");
+      if (mockApi.shouldUseMock()) {
+        const mockData = await mockApi.getEmployees();
+        const formattedData = mockData.map((item) => ({
+          empId: item.id,
+          fullName: item.fullname,
+          status: item.status,
+          email: item.email,
+          phone: item.phone,
+          startDate: new Date(item.hire_date).toLocaleDateString(),
+        }));
+        setEmployees(formattedData);
+        setLoading(false);
+        return;
+      }
+
       const res = await api.get("/manager/employees");
       const formattedData = res.data.map((item) => ({
         empId: item.id,
@@ -34,8 +52,23 @@ const EmployeeManagement = () => {
       }));
       setEmployees(formattedData);
     } catch (err) {
-      message.error("Failed to load orders");
       console.error(err);
+      // Try mock data as fallback
+      try {
+        const { mockApi } = await import("../../lib/mockApi.js");
+        const mockData = await mockApi.getEmployees();
+        const formattedData = mockData.map((item) => ({
+          empId: item.id,
+          fullName: item.fullname,
+          status: item.status,
+          email: item.email,
+          phone: item.phone,
+          startDate: new Date(item.hire_date).toLocaleDateString(),
+        }));
+        setEmployees(formattedData);
+      } catch (mockErr) {
+        console.error("Failed to load employees");
+      }
     } finally {
       setLoading(false);
     }

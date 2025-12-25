@@ -41,6 +41,29 @@ const OrderManagement = () => {
     const fetchOrders = async (date) => {
       try {
         setLoading(true);
+        
+        // Check if we should use mock data
+        const { mockApi } = await import("../../../lib/mockApi.js");
+        if (mockApi.shouldUseMock()) {
+          const mockData = await mockApi.getOrdersByDate(date.format("YYYY-MM-DD"));
+          const formattedOrders = mockData.map((order) => ({
+            id: order.id,
+            customer: order.fullname,
+            phone: order.phone,
+            receive_phone: order.receive_phone,
+            time: order.ordertime.split(".")[0],
+            total: `${order.total_amount.toLocaleString()} đ`,
+            status: order.status ?? "confirmed",
+            receive_date: new Date(order.receive_date).toLocaleDateString(),
+            receive_time: order.receive_time,
+            address: order.receive_address,
+            receiver: order.receiver,
+          }));
+          setOrders(formattedOrders);
+          setLoading(false);
+          return;
+        }
+
         const res = await api.post(`/employee/order`, {
           date: date.format("YYYY-MM-DD"),
         });
@@ -77,6 +100,17 @@ const OrderManagement = () => {
   const handleRowClick = async (record) => {
     try {
       setLoading(true);
+
+      // Check if we should use mock data
+      const { mockApi } = await import("../../../lib/mockApi.js");
+      if (mockApi.shouldUseMock()) {
+        const mockData = await mockApi.getOrderDetail(record.id);
+        setSelectedOrderDetail(mockData);
+        setSelectedOrder(record);
+        setIsModalOpen(true);
+        setLoading(false);
+        return;
+      }
 
       const res = await api.post(
         `/employee/order/detail`,

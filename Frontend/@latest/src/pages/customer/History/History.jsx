@@ -15,6 +15,14 @@ export default function HistoryPage() {
   // Move fetch function OUTSIDE useEffect
   async function fetchOrderHistory() {
     try {
+      // Check if we should use mock data
+      const { mockApi } = await import("../../../lib/mockApi.js");
+      if (mockApi.shouldUseMock()) {
+        const mockData = await mockApi.getOrderHistory(auth.user.id);
+        setOrders(mockData);
+        return;
+      }
+
       const res = await axios.get(
         `${API_URL}/api/orders/history/${auth.user.id}`,
         { withCredentials: true }
@@ -22,6 +30,14 @@ export default function HistoryPage() {
       setOrders(res.data);
     } catch (error) {
       console.error("Failed to load order history:", error);
+      // Try mock data as fallback
+      try {
+        const { mockApi } = await import("../../../lib/mockApi.js");
+        const mockData = await mockApi.getOrderHistory(auth.user.id);
+        setOrders(mockData);
+      } catch (mockErr) {
+        console.error("Failed to load order history with mock data:", mockErr);
+      }
     }
   }
 

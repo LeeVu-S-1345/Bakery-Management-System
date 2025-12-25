@@ -1,11 +1,19 @@
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 import axios from "axios";
+import { mockMenuData, useMockData } from "./mockData.js";
 
 // --- CACHE ---
 let MENU_CACHE = null; // store fetched menu
 
 // Fetch from backend and store into cache
 export async function fetchMenu() {
+  // Use mock data if enabled
+  if (useMockData()) {
+    console.log("Using mock menu data");
+    MENU_CACHE = mockMenuData;
+    return MENU_CACHE;
+  }
+
   try {
     const res = await axios.get(`${API_URL}/menu`, {
       withCredentials: true,
@@ -14,7 +22,10 @@ export async function fetchMenu() {
     return MENU_CACHE;
   } catch (error) {
     console.error("Error fetching menu data:", error);
-    return []; // always return array
+    // Fallback to mock data if API fails
+    console.log("Falling back to mock menu data");
+    MENU_CACHE = mockMenuData;
+    return MENU_CACHE;
   }
 }
 

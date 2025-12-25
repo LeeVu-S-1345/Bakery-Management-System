@@ -16,6 +16,19 @@ export default function Account() {
   useEffect(() => {
     async function fetchProfile() {
       try {
+        // Check if we should use mock data
+        const { mockApi } = await import("../../../lib/mockApi.js");
+        if (mockApi.shouldUseMock()) {
+          const mockData = await mockApi.getUserProfile(auth.user.id);
+          setForm({
+            name: mockData.fullname,
+            email: mockData.email,
+            phone: mockData.phone || "",
+            address: mockData.address || "",
+          });
+          return;
+        }
+
         // const token = localStorage.getItem("token");
         const res = await axios.get(`${API_URL}/auth/${auth.user.id}`, {
           withCredentials: true,

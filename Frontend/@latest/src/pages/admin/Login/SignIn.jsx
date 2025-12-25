@@ -26,9 +26,22 @@ export default function SignIn() {
       setErr("Please enter email and password");
       return;
     }
-    // TODO: gọi API thật ở đây
-    console.log(API_URL)
     try {
+      // Check if we should use mock data
+      const { mockApi } = await import("../../../lib/mockApi.js");
+      if (mockApi.shouldUseMock()) {
+        const res = await mockApi.login(email, pw, "manager");
+        await auth.login(res.user);
+        if (redirect) {
+          navigate(`/${redirect}`);
+          return;
+        }
+        if (res.user.role == 2) navigate("/employee", {replace: true});
+        else if (res.user.role == 3) navigate("/manager/dashboard");
+        else navigate("/", { replace: true });
+        return;
+      }
+
       const res = await axios.post(`${API_URL}/manager/auth/signin`, {
         email: email,
         password: pw,

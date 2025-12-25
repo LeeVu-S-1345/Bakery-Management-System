@@ -52,3 +52,43 @@
   color: #b00020; background: #fde7ea; border: 1px solid #f8c7cf;
   padding: 8px 10px; border-radius: 10px; font-size: 14px;
 }
+
+@media (max-width: 480px) {
+  .signup {
+    padding: 24px 12px;
+  }
+  
+  .signup__card {
+    width: 100%;
+  }
+  
+  .signup__logo {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .signup__title {
+    font-size: 1.5rem;
+  }
+  
+  .field {
+    padding: 5px 8px 5px 6px;
+  }
+  
+  .field input {
+    font-size: 13px;
+  }
+  
+  .signup__btn {
+    padding: 9px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .signup__hint {
+    font-size: 13px;
+  }
+  
+  .agree {
+    font-size: 13px;
+  }
+}

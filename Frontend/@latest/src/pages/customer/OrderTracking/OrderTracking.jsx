@@ -31,6 +31,15 @@ export default function OrderTracking() {
       setLoading(true);
       setError("");
       try {
+        // Check if we should use mock data
+        const { mockApi } = await import("../../../lib/mockApi.js");
+        if (mockApi.shouldUseMock()) {
+          const mockData = await mockApi.getOrderTracking(orderId);
+          setOrder(mockData);
+          setLoading(false);
+          return;
+        }
+
         const res = await axios.get(`${API_URL}/api/orders/track/${orderId}`, {
           withCredentials: true, // if using cookies/token
         });
