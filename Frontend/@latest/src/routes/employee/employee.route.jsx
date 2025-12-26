@@ -2,6 +2,7 @@ import EmployeeDashboard from "../../pages/employee/EmployeeDashboard/EmployeeDa
 import ManagementLayout from "../../pages/employee/ManagementLayout.jsx";
 import OrderManagement from "../../pages/employee/OrderManagement/OrderManagement.jsx";
 import StockManagement from "../../pages/employee/StockManagement/StockManagement.jsx";
+import Profile from "../../pages/employee/Profile/Profile.jsx";
 import SigninPages from "../../pages/employee/Login/SignIn.jsx";
 import EmployeeRoute from "./EmployeeRoute.jsx";
 import PublicLayout from "../../layouts/PublicLayout.jsx";
@@ -38,5 +39,13 @@ export const employeeRoutes = [
         { path: "orders", element: <OrderManagement /> },
         { path: "stock", element: <StockManagement /> },
         ],
+    },
+    {
+        path: "/employee/profile",
+        element: (
+        <PublicLayout>
+            <Profile/>
+        </PublicLayout>
+        ),
     },
 ];

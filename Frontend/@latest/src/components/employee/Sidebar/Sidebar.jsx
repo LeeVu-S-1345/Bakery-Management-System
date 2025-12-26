@@ -4,7 +4,7 @@ import { useAuth } from '../../../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 // Import Icon (Mình dùng icon cái bánh và bảng ghi chú cho giống hình)
-import { BiCake, BiClipboard } from "react-icons/bi"; 
+import { BiCake, BiClipboard, BiUser } from "react-icons/bi"; 
 // Import ảnh logo (Nếu chưa có file logo, bạn có thể comment dòng này lại)
 import logoImg from '../../../assets/images/common/logo-sweet-bakery.png'; 
 
@@ -53,6 +53,18 @@ const Sidebar = () => {
           <BiClipboard className={styles.icon} />
           Stock Management
         </NavLink>
+
+        {/* Link 3: Your Profile */}
+        <NavLink 
+          to="/employee/profile" 
+          className={({ isActive }) => 
+            isActive ? `${styles.navItem} ${styles.active}` : styles.navItem
+          }
+        >
+          <BiUser className={styles.icon} />
+          Your Profile
+        </NavLink>
+
       </nav>
 
       {/* 3. LOGOUT SECTION */}

@@ -1,0 +1,184 @@
+/* src/pages/employee/EmployeeProfile.module.css */
+
+.container {
+  padding: 20px;
+  background-color: white;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  color: #b71c1c; /* Màu đỏ chủ đạo */
+  font-weight: bold;
+  font-size: 24px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.divider {
+  border-bottom: 2px solid #b71c1c;
+  margin-bottom: 30px;
+}
+
+.contentWrapper {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Profile.module.css */
+
+/* ... (Giữ nguyên các phần trên) ... */
+
+.profileContent {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+  /* MỚI: Đảm bảo cả 2 cột đều căn thẳng hàng từ trên xuống */
+  align-items: flex-start;
+}
+
+/* --- CỘT TRÁI: AVATAR --- */
+.avatarSection {
+  /* MỚI: Không cần set cứng width 300px ở đây nữa, để nó tự theo nội dung bên trong */
+  flex: 0 0 auto;
+}
+
+/* MỚI: Style trực tiếp vào khung Upload của Ant Design */
+/* Class .avatarUploader được khai báo trong file JSX */
+.avatarUploader :global(.ant-upload.ant-upload-select) {
+  width: 300px !important;  /* Chiều rộng cố định */
+  height: 300px !important; /* Chiều cao bằng chiều rộng -> HÌNH VUÔNG */
+  background-color: #fafafa;
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  
+  /* Căn giữa nội dung (icon upload) bên trong */
+  display: flex !important; 
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important; /* Loại bỏ padding mặc định của Antd nếu có */
+  margin: 0 !important;  /* Loại bỏ margin gây lệch */
+}
+
+/* Hiệu ứng khi di chuột vào khung upload */
+.avatarUploader :global(.ant-upload.ant-upload-select:hover) {
+  border-color: #b71c1c;
+}
+
+/* Class này giờ chỉ dùng để chứa icon upload khi chưa có ảnh */
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%; /* MỚI: Bắt buộc chiều cao 100% để lấp đầy khung vuông */
+  object-fit: cover; /* Cắt ảnh sao cho vừa khung mà không bị méo */
+  border-radius: 8px;
+  display: block; /* Loại bỏ khoảng trắng thừa dưới chân ảnh */
+}
+
+.uploadIcon {
+  font-size: 48px;
+  color: #b71c1c;
+  margin-bottom: 10px;
+}
+
+.uploadHint {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
+/* --- PHẦN FORM (BÊN PHẢI) --- */
+.formSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Style chung cho các bảng */
+.infoTable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+/* Header của từng bảng (Đỏ - Xanh - Xám) */
+.headerRed {
+  background-color: #b71c1c;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.headerGreen {
+  background-color: #009933; /* Màu xanh lá */
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.headerGray {
+  background-color: #aaa; /* Màu xám */
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Các dòng trong bảng */
+.row {
+  border-bottom: 1px solid #ddd;
+}
+
+.labelCell {
+  width: 30%;
+  padding: 12px;
+  font-weight: bold;
+  border-right: 1px solid #ddd;
+  background-color: white;
+}
+
+.valueCell {
+  padding: 8px 12px;
+  background-color: white;
+}
+
+/* --- BUTTONS --- */
+.buttonGroup {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.btnSave {
+  background-color: #28a745 !important; /* Xanh lá */
+  border-color: #28a745 !important;
+  color: white !important;
+  font-weight: bold !important;
+  height: 40px;
+  padding: 0 30px;
+  border-radius: 20px !important;
+}
+
+.btnCancel {
+  background-color: #ff0000 !important; /* Đỏ */
+  border-color: #ff0000 !important;
+  color: white !important;
+  font-weight: bold !important;
+  height: 40px;
+  padding: 0 30px;
+  border-radius: 20px !important;
+}
