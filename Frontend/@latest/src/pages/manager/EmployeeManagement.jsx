@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
+// Đảm bảo import đúng đường dẫn các component chung
 import ManagerHeader from "./components/ManagerHeader.jsx";
 import ManagerSidebar from "./components/ManagerSidebar.jsx";
 import ManagerFooter from "./components/ManagerFooter.jsx";
@@ -7,17 +8,24 @@ import AddEmployeeModal from "./components/AddEmployeeModal.jsx";
 import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
 import DeleteSuccess from "./components/DeleteSuccess.jsx";
 
+// 1. DATA: Bổ sung Address, DOB, Gender
 const mockEmployees = Array(15).fill(null).map((_, i) => ({
-  id: `#OR00${i + 1}`,
+  id: i,
+  empId: `00${i + 1}`,
   fullName: "Nguyen Van A",
-  empId: "001",
-  email: "0912345678",
-  phone: "12:30 12/10/25",
+  email: "sample@gmail.com",
+  phone: "0912345678",
+  address: "1 Dai Co Viet, Hai Ba Trung, Hanoi", // Mới
+  dob: "12/10/1999", // Mới
+  gender: i % 2 === 0 ? "Male" : "Female", // Mới
   salary: "150,000 đ",
   status: "confirmed",
+  role: "Seller",
+  startDate: "12/10/2025"
 }));
 
 const EmployeeManagement = () => {
+  // State quản lý giao diện
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
@@ -26,18 +34,15 @@ const EmployeeManagement = () => {
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const [employees, setEmployees] = useState(mockEmployees);
 
+  // Xử lý click vào dòng nhân viên -> Xem chi tiết
   const handleRowClick = (emp) => {
     setSelectedEmployee({
-      fullName: emp.fullName,
-      phoneNumber: "0912345678",
-      email: "sample@gmail.com",
-      startDate: "12/10/2025",
-      loginEmail: "sample@gmail.com",
-      password: "password",
-      id: emp.empId,
-      role: "Seller",
-      status: "working / stopped working",
+      ...emp,
+      // Đảm bảo map đúng các trường dữ liệu vào Modal
+      loginEmail: emp.email,
+      password: "password123", // Giả lập
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400",
+      status: "working", 
     });
     setShowViewModal(true);
   };
@@ -58,6 +63,7 @@ const EmployeeManagement = () => {
     setEmployees((prev) => prev.slice(0, -1));
   };
 
+  // --- RENDERING MODALS ---
   if (showAddModal) {
     return (
       <AddEmployeeModal
@@ -79,62 +85,95 @@ const EmployeeManagement = () => {
     );
   }
 
+  // --- RENDERING MAIN LAYOUT (Chuẩn theo ProductManagement) ---
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    // 1. Container chính: min-h-screen để footer tự đẩy xuống đáy
+    <div className="flex flex-col min-h-screen bg-[#FDFBF0]">
+      
+      {/* Sidebar (Overlay) */}
       <ManagerSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <ManagerHeader onMenuClick={() => setSidebarOpen(true)} />
 
-      <main className="flex-1 p-8">
-        {/* Header */}
-        <h1 className="text-4xl font-bold text-primary uppercase mb-2">
-          Human Resource
-        </h1>
-        <h1 className="text-4xl font-bold text-primary uppercase mb-4">
-          Management
-        </h1>
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h2 className="text-xl font-semibold text-secondary">List of Employee</h2>
-            <div className="h-0.5 bg-secondary w-full mt-1" />
+      {/* Header (Sticky Top) */}
+      <div className="sticky top-0 z-30">
+        <ManagerHeader onMenuClick={() => setSidebarOpen(true)} />
+      </div>
+
+      {/* 2. Main Content: Căn giữa, giới hạn chiều rộng */}
+      <main className="flex-1 p-4 lg:p-8 w-full max-w-7xl mx-auto">
+        
+        {/* Title Section */}
+        <div className="mb-8 pt-4">
+          <h1 className="text-3xl lg:text-4xl font-bold text-[#d32f2f] uppercase mb-2 font-sans tracking-wide">
+            Human Resource
+          </h1>
+          <h1 className="text-3xl lg:text-4xl font-bold text-[#d32f2f] uppercase mb-6 font-sans tracking-wide">
+             Management
+          </h1>
+          
+          {/* Toolbar: Sub-title + Add Button */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b-2 border-[#b99f56] pb-2">
+            <h2 className="text-xl font-bold text-[#b99f56] uppercase">
+              List of Employee
+            </h2>
+            <button 
+              onClick={() => setShowAddModal(true)} 
+              className="flex items-center gap-2 bg-[#d32f2f] text-white px-6 py-2.5 rounded-lg font-bold shadow-lg hover:bg-[#b71c1c] hover:-translate-y-0.5 transition-all duration-200"
+            >
+              ADD NEW EMPLOYEE <Plus className="w-5 h-5" />
+            </button>
           </div>
-          <button onClick={() => setShowAddModal(true)} className="btn-add">
-            ADD NEW EMPLOYEE <Plus className="w-5 h-5" />
-          </button>
         </div>
 
-        {/* Table */}
-        <div className="bg-card rounded-lg border border-border overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-muted/50 border-b border-border">
-                <th className="py-3 px-4 text-left text-sm font-medium">Full name</th>
-                <th className="py-3 px-4 text-left text-sm font-medium">ID</th>
-                <th className="py-3 px-4 text-left text-sm font-medium">Email</th>
-                <th className="py-3 px-4 text-left text-sm font-medium">Phone number</th>
-                <th className="py-3 px-4 text-left text-sm font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((emp, index) => (
-                <tr
-                  key={index}
-                  onClick={() => handleRowClick(emp)}
-                  className="border-b border-border last:border-b-0 hover:bg-muted/30 cursor-pointer transition-colors"
-                >
-                  <td className="py-3 px-4 text-sm">{emp.fullName}</td>
-                  <td className="py-3 px-4 text-sm">{emp.empId}</td>
-                  <td className="py-3 px-4 text-sm">{emp.email}</td>
-                  <td className="py-3 px-4 text-sm">{emp.phone}</td>
-                  <td className="py-3 px-4 text-sm">{emp.status}</td>
+        {/* Table Section */}
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-8">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-50/80 border-b border-gray-200">
+                  <th className="py-4 px-6 text-left text-sm font-extrabold text-gray-700 uppercase tracking-wider">ID</th>
+                  <th className="py-4 px-6 text-left text-sm font-extrabold text-gray-700 uppercase tracking-wider">Full name</th>
+                  <th className="py-4 px-6 text-left text-sm font-extrabold text-gray-700 uppercase tracking-wider">Gender</th>
+                  <th className="py-4 px-6 text-left text-sm font-extrabold text-gray-700 uppercase tracking-wider">Date of Birth</th>
+                  <th className="py-4 px-6 text-left text-sm font-extrabold text-gray-700 uppercase tracking-wider">Phone</th>
+                  {/* Address có thể ẩn trên mobile hoặc hiển thị dạng rút gọn nếu cần */}
+                  <th className="py-4 px-6 text-left text-sm font-extrabold text-gray-700 uppercase tracking-wider hidden xl:table-cell">Address</th>
+                  <th className="py-4 px-6 text-left text-sm font-extrabold text-gray-700 uppercase tracking-wider">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {employees.map((emp, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => handleRowClick(emp)}
+                    className="hover:bg-red-50/50 cursor-pointer transition-colors duration-150 group"
+                  >
+                    <td className="py-4 px-6 text-sm text-gray-500 font-medium group-hover:text-[#d32f2f]">{emp.empId}</td>
+                    <td className="py-4 px-6 text-sm text-gray-800 font-bold">{emp.fullName}</td>
+                    <td className="py-4 px-6 text-sm text-gray-600">{emp.gender}</td>
+                    <td className="py-4 px-6 text-sm text-gray-600">{emp.dob}</td>
+                    <td className="py-4 px-6 text-sm text-gray-600">{emp.phone}</td>
+                    <td className="py-4 px-6 text-sm text-gray-600 hidden xl:table-cell truncate max-w-[200px]">{emp.address}</td>
+                    <td className="py-4 px-6 text-sm">
+                      <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+                        emp.status === 'confirmed' 
+                          ? 'bg-green-100 text-green-700' 
+                          : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        {emp.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
 
+      {/* Footer (Nằm cuối trang, không đè nội dung) */}
       <ManagerFooter />
 
+      {/* Popups */}
       {showDeleteConfirm && (
         <DeleteConfirmation
           type="employee"
