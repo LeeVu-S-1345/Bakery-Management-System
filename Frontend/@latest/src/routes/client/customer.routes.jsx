@@ -15,6 +15,7 @@ import AboutPage from "../../pages/customer/AboutPage.jsx";
 import ContactPage from "../../pages/customer/ContactPage.jsx";
 import FaqPage from "../../pages/customer/FaqPage.jsx";
 import PublicLayout from "../../layouts/PublicLayout.jsx";
+import ChangePassword from "../../pages/customer/ChangePassword/ChangePassword.jsx";
 
 export const customerRoutes = [
     {
@@ -133,6 +134,16 @@ export const customerRoutes = [
           <PublicLayout>
             <CustomerRoute>
               <Account />
+            </CustomerRoute>
+          </PublicLayout>
+        ),
+    },
+    {
+        path: "/change-password",
+        element: (
+          <PublicLayout>
+            <CustomerRoute>
+              <ChangePassword />
             </CustomerRoute>
           </PublicLayout>
         ),

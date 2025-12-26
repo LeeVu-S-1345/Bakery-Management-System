@@ -82,3 +82,39 @@
   border-radius: 10px;
   font-size: 14px;
 }
+
+@media (max-width: 480px) {
+  .signin {
+    padding: 24px 12px;
+  }
+  
+  .signin__card {
+    width: 100%;
+  }
+  
+  .signin__logo {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .signin__title {
+    font-size: 1.5rem;
+  }
+  
+  .field {
+    padding: 5px 8px 5px 6px;
+  }
+  
+  .field input {
+    font-size: 13px;
+  }
+  
+  .signin__btn {
+    padding: 9px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .signin__hint {
+    font-size: 13px;
+  }
+}

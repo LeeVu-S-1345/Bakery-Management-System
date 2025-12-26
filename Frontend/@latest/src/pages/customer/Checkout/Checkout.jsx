@@ -4,7 +4,7 @@ import { useCart } from "../../../context/CartContext.jsx";
 import { formatVND } from "../../../lib/money";
 import { Link, useNavigate } from "react-router-dom";
 import { generateOrderId, saveOrder } from "../../../lib/orders.js";
-import axios from "axios";
+import api from "../../../lib/axiosCustomer.js";
 import Header from "../../../components/common/Header/Header.jsx";
 import Footer from "../../../components/common/Footer/Footer.jsx";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
@@ -48,6 +48,8 @@ export default function Checkout() {
   const [voucher, setVoucher] = useState("");
   const [voucherMsg, setVoucherMsg] = useState("");
   const [payment, setPayment] = useState("bank"); // bank | cod
+  const [showQRPopup, setShowQRPopup] = useState(false);
+  const [orderPayload, setOrderPayload] = useState(null);
 
   // phí/giảm giá
   const shipFee = 15000;
@@ -95,7 +97,7 @@ export default function Checkout() {
     const payload = {
       id: orderId,
       cus_id: cus_id,
-      status: "Processing",
+      status: "Pending",
       placedAt,
       customer,
       receiver: receiverSame ? customer : receiver,
@@ -118,17 +120,39 @@ export default function Checkout() {
         { label: "On delivery", time: null, note: "Deliveried by shipper" },
       ],
     };
+
+    if (payment === "bank") {
+      setOrderPayload(payload);
+      setShowQRPopup(true);
+      return;
+    }
+
+    // If COD, proceed directly
+    await submitOrder(payload);
+  }
+    
+  async function submitOrder(payload) {
     try {
-      await axios.post(`${API_URL}/api/orders`, payload, {
-        withCredentials: true
-      });
+      await api.post(`/api/orders`, payload);
       saveOrder(payload);
       cart.clear();
-      nav(`/order-success/${orderId}`);
+      nav(`/order-success/${payload.id}`);
     } catch (err) {
         console.error("Failed to place order", err);
         alert("Cannot place order. Try again.");
     }
+  }
+
+  function handleQRConfirm() {
+    setShowQRPopup(false);
+    if (orderPayload) {
+      submitOrder(orderPayload);
+    }
+  }
+
+  function handleQRCancel() {
+    setShowQRPopup(false);
+    setOrderPayload(null);
   }
 
   const districts = DISTRICTS[city] || [];
@@ -358,6 +382,46 @@ export default function Checkout() {
         </div>
       </main>
       <Footer />
+
+      {/* QR Code Popup for Bank Transfer */}
+      {showQRPopup && (
+        <div className="co__qrOverlay" onClick={handleQRCancel}>
+          <div className="co__qrPopup" onClick={(e) => e.stopPropagation()}>
+            <button className="co__qrClose" onClick={handleQRCancel}>×</button>
+            <h2 className="co__qrTitle">Scan QR Code to Pay</h2>
+            <p className="co__qrSubtitle">Total amount: {formatVND(total)}</p>
+            
+            <div className="co__qrCode">
+              {/* Mock QR Code - using a simple pattern */}
+              <div className="co__qrPattern">
+                <div className="co__qrSquare co__qrSquare--tl"></div>
+                <div className="co__qrSquare co__qrSquare--tr"></div>
+                <div className="co__qrSquare co__qrSquare--bl"></div>
+                <div className="co__qrGrid">
+                  {Array.from({ length: 25 }).map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="co__qrDot"
+                      style={{
+                        backgroundColor: Math.random() > 0.5 ? '#000' : '#fff'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="co__qrActions">
+              <button className="co__qrBtn co__qrBtn--cancel" onClick={handleQRCancel}>
+                Cancel
+              </button>
+              <button className="co__qrBtn co__qrBtn--confirm" onClick={handleQRConfirm}>
+                I have paid
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

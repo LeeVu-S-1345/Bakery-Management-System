@@ -4,7 +4,7 @@ import "./History.css";
 import { useAuth } from "../../../context/AuthContext.jsx";
 import { formatVND } from "../../../lib/money.js";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../lib/axiosCustomer.js";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,9 +15,8 @@ export default function HistoryPage() {
   // Move fetch function OUTSIDE useEffect
   async function fetchOrderHistory() {
     try {
-      const res = await axios.get(
-        `${API_URL}/api/orders/history/${auth.user.id}`,
-        { withCredentials: true }
+      const res = await api.get(
+        `/api/orders/history/${auth.user.id}`
       );
       setOrders(res.data);
     } catch (error) {

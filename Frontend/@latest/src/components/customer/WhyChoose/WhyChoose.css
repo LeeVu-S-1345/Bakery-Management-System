@@ -93,9 +93,75 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .why__inner { grid-template-columns: 1fr; }
-  .why__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .why {
+    padding: 40px 0;
+  }
+  
+  .why__inner { 
+    grid-template-columns: 1fr; 
+    gap: 24px;
+  }
+  
+  .why__cards { 
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    gap: 14px;
+  }
+  
+  .why__frame {
+    padding: 16px 18px;
+  }
 }
+
+@media (max-width: 768px) {
+  .why {
+    padding: 32px 0;
+  }
+  
+  .why__title {
+    font-size: clamp(22px, 5vw, 32px);
+  }
+  
+  .why__subtitle {
+    font-size: 14px;
+  }
+  
+  .why__cards {
+    gap: 12px;
+  }
+  
+  .why__card {
+    padding: 14px 12px;
+  }
+  
+  .why__icon img {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .why__cardTitle {
+    font-size: 14px;
+  }
+  
+  .why__cardText {
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 560px) {
-  .why__cards { grid-template-columns: 1fr; }
+  .why {
+    padding: 24px 0;
+  }
+  
+  .why__cards { 
+    grid-template-columns: 1fr; 
+    gap: 10px;
+  }
+  
+  .why__frame {
+    padding: 12px 14px;
+  }
+  
+  .why__card {
+    padding: 12px 10px;
+  }
 }

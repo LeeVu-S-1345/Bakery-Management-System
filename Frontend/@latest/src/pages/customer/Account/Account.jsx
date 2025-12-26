@@ -4,9 +4,7 @@ import { useAuth } from "../../../context/AuthContext.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import Header from '../../../components/common/Header/Header.jsx';
 import Footer from '../../../components/common/Footer/Footer.jsx';
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+import api from "../../../lib/axiosCustomer.js";
 
 export default function Account() {
   const auth = useAuth();
@@ -17,7 +15,7 @@ export default function Account() {
     async function fetchProfile() {
       try {
         // const token = localStorage.getItem("token");
-        const res = await axios.get(`${API_URL}/auth/${auth.user.id}`, {
+        const res = await api.get(`/auth/${auth.user.id}`, {
           withCredentials: true,
         });
 
@@ -27,6 +25,7 @@ export default function Account() {
           email: res.data.email,
           phone: res.data.phone || "",
           address: res.data.address || "",
+          dob: res.data.dob || "",
         });
 
       } catch (error) {
@@ -42,8 +41,7 @@ export default function Account() {
   const [form, setForm] = useState({
     name: auth.user.name || "",
     email: auth.user.email || "",
-    // ✅ HIỂN THỊ MẬT KHẨU HIỆN TẠI TỪ auth.user (theo yêu cầu)
-    password: auth.user.password || "", 
+    dob: "",
     phone: auth.user.phone || "",
     address: auth.user.address || "",
   });
@@ -100,14 +98,14 @@ export default function Account() {
                   />
                 </label>
 
-                {/* ✅ Ô PASSWORD: type="text" để luôn hiển thị rõ */}
                 <label>
-                  <span>Password</span>
+                  <span>Date of birth</span>
                   <input
-                    type="text" 
-                    placeholder="Enter new password"
-                    value={form.password} 
-                    onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                    type="date"
+                    value={new Date(form.dob).toLocaleDateString("en-CA")}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, dob: e.target.value }))
+                    }
                   />
                 </label>
                 {/* --------------------- */}

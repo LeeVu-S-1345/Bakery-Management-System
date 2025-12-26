@@ -67,12 +67,13 @@ class Account {
     static async findById(id) {
         try {
             const result = await pool.query('SELECT * FROM useraccount WHERE id = $1', [id]);
-            const user = await pool.query('SELECT * FROM customer WHERE user_id = $1', [result.rows[0].id])
+            const user = await pool.query('SELECT * FROM customer WHERE user_id = $1', [result.rows[0].id]);
             return {
                 fullname: user.rows[0].fullname,
                 email: result.rows[0].email,
                 phone: result.rows[0].phone,
                 address: user.rows[0].address,
+                dob: user.rows[0].dob,
             }
         } catch(error) {
             console.error('Error cannot find id:', error);
@@ -119,10 +120,10 @@ class Account {
             const result = await pool.query(query, values);
             const query2 = `
                         UPDATE customer
-                        SET fullname = $1, address = $2
+                        SET fullname = $1, address = $2, dob = $4
                         WHERE user_id = $3
                         RETURNING fullname, address;`;
-            const values2 = [data.name, data.address, data.id];
+            const values2 = [data.name, data.address, data.id, data.dob];
             const user = await pool.query(query2, values2);
             return {
                 id: result.rows[0].id,
@@ -133,6 +134,28 @@ class Account {
             };
         } catch(error) {
             console.error(error);
+            throw error;
+        }
+    }
+
+    static async getPassword(id) {
+        try {
+            const result = await pool.query('SELECT password FROM useraccount WHERE id = $1', [id]);
+            return result.rows[0];
+        } catch (error) {
+            console.error('Error getting password:', error);
+            throw error;
+        }
+    }
+
+    static async changePassword(id, newPassword) {
+        try {
+            const query = `UPDATE useraccount SET password = $1,
+                        updatedat = NOW() WHERE id = $2`;
+            const values = [newPassword, id];
+            await pool.query(query, values);
+        } catch (error) {
+            console.error('Error changing password:', error);
             throw error;
         }
     }

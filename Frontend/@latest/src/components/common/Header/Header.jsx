@@ -185,9 +185,19 @@ export default function Header() {
                       type="button"
                       onClick={() => {
                         setIsAccountOpen(false);
+                        navigate("/change-password");
+                      }}
+                    >
+                      Change Password
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsAccountOpen(false);
                         navigate("/orders");
                       }}
                     >
+                      
                       History
                     </button>
                     <button

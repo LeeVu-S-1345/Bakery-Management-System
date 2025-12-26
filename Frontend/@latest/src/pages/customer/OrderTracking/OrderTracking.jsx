@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../../../components/common/Header/Header.jsx";
 import Footer from "../../../components/common/Footer/Footer.jsx";
-import axios from "axios";
+import api from "../../../lib/axiosCustomer.js";
 import "./OrderTracking.css";
 import { formatVND } from "../../../lib/money.js";
 
@@ -31,9 +31,7 @@ export default function OrderTracking() {
       setLoading(true);
       setError("");
       try {
-        const res = await axios.get(`${API_URL}/api/orders/track/${orderId}`, {
-          withCredentials: true, // if using cookies/token
-        });
+        const res = await api.get(`/api/orders/track/${orderId}`);
         setOrder(res.data);
       } catch (err) {
         if (err.response?.status === 401) {
