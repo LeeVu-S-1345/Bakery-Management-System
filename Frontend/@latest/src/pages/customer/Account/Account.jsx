@@ -15,9 +15,7 @@ export default function Account() {
     async function fetchProfile() {
       try {
         // const token = localStorage.getItem("token");
-        const res = await api.get(`/auth/${auth.user.id}`, {
-          withCredentials: true,
-        });
+        const res = await api.get(`/auth/${auth.user.id}`);
 
         // cập nhật form bằng dữ liệu từ DB
         setForm({

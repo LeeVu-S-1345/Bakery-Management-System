@@ -138,6 +138,59 @@ class Account {
         }
     }
 
+    static async updateEmployee(data, id) {
+        try {
+            const query = `
+                        UPDATE useraccount
+                        SET email = $1, phone = $2, updatedat = NOW()
+                        WHERE id = $3
+                        RETURNING id, email, phone;
+                        `;
+            const values = [data.email, data.phone, id];
+            const result = await pool.query(query, values);
+            const query2 = `
+                        UPDATE employee
+                        SET fullname = $1, address = $2, dob = $4
+                        WHERE user_id = $3
+                        RETURNING fullname, address, avatar, department, hire_date;`;
+            const values2 = [data.fullname, data.address, id, data.dob];
+            const user = await pool.query(query2, values2);
+            return {
+                id: result.rows[0].id,
+                email: result.rows[0].email,
+                phone: result.rows[0].phone,
+                fullname: user.rows[0].fullname,
+                address: user.rows[0].address,
+                avatar: user.rows[0].avatar,
+                hire_date: user.rows[0].hire_date,
+                department: user.rows[0].department,
+            };
+        } catch(error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async findEmployeeById(id) {
+        try {
+            const result = await pool.query('SELECT * FROM useraccount WHERE id = $1', [id]);
+            const user = await pool.query('SELECT * FROM employee WHERE user_id = $1', [id]);
+            return {
+                fullname: user.rows[0].fullname,
+                email: result.rows[0].email,
+                phone: result.rows[0].phone,
+                address: user.rows[0].address,
+                dob: user.rows[0].dob,
+                hire_date: user.rows[0].hire_date,
+                avatar: user.rows[0].avatar,
+                department: user.rows[0].department,
+            }
+        } catch(error) {
+            console.error('Error cannot find id:', error);
+            throw error;
+        }
+    }    
+
     static async getPassword(id) {
         try {
             const result = await pool.query('SELECT password FROM useraccount WHERE id = $1', [id]);

@@ -5,6 +5,8 @@ import StockManagement from "../../pages/employee/StockManagement/StockManagemen
 import SigninPages from "../../pages/employee/Login/SignIn.jsx";
 import EmployeeRoute from "./EmployeeRoute.jsx";
 import PublicLayout from "../../layouts/PublicLayout.jsx";
+import Account from "../../pages/employee/Account/Account.jsx";
+import ChangePassword from "../../pages/employee/ChangePassword/ChangePassword.jsx";
 
 export const employeeRoutes = [
     {
@@ -38,5 +40,25 @@ export const employeeRoutes = [
         { path: "orders", element: <OrderManagement /> },
         { path: "stock", element: <StockManagement /> },
         ],
+    },
+    {
+        path: "/employee/profile",
+        element: (
+        <PublicLayout>
+            <EmployeeRoute>
+                <Account />
+            </EmployeeRoute>
+        </PublicLayout>
+        ),
+    },
+    {
+        path: "/employee/change-password",
+        element: (
+        <PublicLayout>
+            <EmployeeRoute>
+                <ChangePassword/>
+            </EmployeeRoute>
+        </PublicLayout>
+        ),
     },
 ];

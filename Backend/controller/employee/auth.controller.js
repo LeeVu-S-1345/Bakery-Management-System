@@ -39,3 +39,69 @@ module.exports.signin = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 }
+
+module.exports.updateProfile = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+        if (req.user.id !== userId) {
+            return res.status(403).json({ error: 'You do not have permission to update this profile' });
+        }
+        // console.log(req.body);
+        const result = await Account.updateEmployee(req.body, userId);
+        if (!result) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(result);
+    } catch (err) {
+        console.error("Update failed:", err);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
+module.exports.userProfile = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+        if (req.user.id !== userId) {
+            return res.status(403).json({ error: 'You do not have permission to update this profile' });
+        }
+        const result = await Account.findEmployeeById(userId);
+        if (!result) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(result);
+    } catch (err) {
+        console.error("Get profile fail:", err);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
+module.exports.changePassword = async (req, res) => {
+  const userId = parseInt(req.params.id);
+  const {currentPassword, newPassword} = req.body;
+  if (req.user.id != userId) {
+    return res.status(403).json({ error: "You can only change your own password" });
+  }
+
+  const result = await Account.getPassword(userId);
+  if (result.rowCount === 0) {
+      return res.status(404).json({ error: "User not found" });
+  }
+
+  const hashedPassword = result.password;
+
+  const match = await bcrypt.compare(currentPassword, hashedPassword);
+  if (!match) {
+    return res.status(400).json({ error: "Current password is incorrect" });
+  }
+
+  const newHashedPassword = await bcrypt.hash(newPassword, 10);
+  try {
+    await Account.changePassword(userId, newHashedPassword);
+    res.json({ message: "Password changed successfully" });
+  } catch (err) {
+    console.error("Change password failed:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+}
