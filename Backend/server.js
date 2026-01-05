@@ -30,7 +30,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false,   // true if using HTTPS
+        secure: true,   // true if using HTTPS
         // NOTE: do NOT set maxAge or expires → this makes it a session cookie
     }
 }));
